@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[TTimeline]]></title>
+  <subtitle><![CDATA[星辰大海]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-03-06T19:11:16.890Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name><![CDATA[Tong Su]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[First Post]]></title>
+    <link href="http://yoursite.com/2015/03/06/First-Post/"/>
+    <id>http://yoursite.com/2015/03/06/First-Post/</id>
+    <published>2015-03-06T01:30:20.000Z</published>
+    <updated>2015-03-06T19:11:16.890Z</updated>
+    <content type="html"><![CDATA[<p>Hello world!</p>
+<p>This is my new blog. I will begin to record my life and study here.</p>
+<p>It will be greatly honoured if my words here could help you.</p>
+<p>Tong Su</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Hello world!</p>
+<p>This is my new blog. I will begin to record my life and study here.</p>
+<p>It will be greatly honoured if my words he]]>
+    </summary>
+    
+      <category term="blog" scheme="http://yoursite.com/categories/blog/"/>
+    
+  </entry>
+  
+</feed>
