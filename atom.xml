@@ -3,9 +3,9 @@
   <title><![CDATA[TTimeline]]></title>
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2015-07-29T10:20:51.395Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://tongsucn.com/"/>
+  <updated>2015-07-29T10:20:51.000Z</updated>
+  <id>http://tongsucn.com/</id>
   
   <author>
     <name><![CDATA[Tong Su]]></name>
@@ -16,10 +16,10 @@
   
   <entry>
     <title><![CDATA[First Post]]></title>
-    <link href="http://yoursite.com/2015/03/06/First-Post/"/>
-    <id>http://yoursite.com/2015/03/06/First-Post/</id>
-    <published>2015-03-06T01:30:20.000Z</published>
-    <updated>2015-07-29T10:20:51.395Z</updated>
+    <link href="http://tongsucn.com/2015/03/06/First-Post/"/>
+    <id>http://tongsucn.com/2015/03/06/First-Post/</id>
+    <published>2015-03-06T08:30:20.000Z</published>
+    <updated>2015-07-29T10:20:51.000Z</updated>
     <content type="html"><![CDATA[<p>Hello world!</p>
 <p>This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.</p>
 <p>It will be greatly honoured if my words here could help you.</p>
@@ -34,7 +34,7 @@
 <p>This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learn]]>
     </summary>
     
-      <category term="blog" scheme="http://yoursite.com/categories/blog/"/>
+      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
     
   </entry>
   
