@@ -63,8 +63,8 @@
 
 IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest r">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[ML Review] Least Squares Regression">
-<meta property="og:url" content="http://tongsucn.com/2015/11/05/least-squares-regression/index.html">
+<meta property="og:title" content="[ML Review] Least Squares Regression I">
+<meta property="og:url" content="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/index.html">
 <meta property="og:site_name" content="TTimeline">
 <meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlinMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
 
@@ -76,7 +76,7 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
 <meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png">
 <meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_4.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[ML Review] Least Squares Regression">
+<meta name="twitter:title" content="[ML Review] Least Squares Regression I">
 <meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlinMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
 
 
@@ -93,7 +93,7 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
   };
 </script>
 
-  <title> [ML Review] Least Squares Regression | TTimeline </title>
+  <title> [ML Review] Least Squares Regression I | TTimeline </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
@@ -249,7 +249,7 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
             
             
               
-                [ML Review] Least Squares Regression
+                [ML Review] Least Squares Regression I
               
             
           </h1>
@@ -284,8 +284,8 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/05/least-squares-regression/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/05/least-squares-regression/" itemprop="commentsCount"></span>
+                <a href="/2015/11/05/ML-Review-Least-Squares-Regression-I/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/05/ML-Review-Least-Squares-Regression-I/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -321,7 +321,7 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 <p>Let’s see its result on a given training set:</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_2.png" width="256"></p>
 <h2 id="Non-linear">Non-linear</h2><p>Although the obtained line describes the trend of these <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/regTrain.txt" target="_blank" rel="external">data points</a>, but it’s not what we want. Why? Because it doesn’t fit the points well, our function is linear but the data points implies a non-linear model! Our “guess” is not suitable for this case. So the solution should be clear: using some non-linear functions instead of the pure linear one, e.g. in polynomial form like \(t = ax^2 + bx + c\) (of course this function is not suitable for the above case, it’s just an example :P), or in Fourier form like \(t = \cos{(2 \pi x)} + \sin{(2 \pi x)} + 1\).</p>
-<p>There could be many different forms of such non-linear functions, but for convenience usage, we need to unify them into one form: \(t = \text{w}^T \phi{(\text{X})}\). The \(\phi\) here is the so called <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">basis function</a>, it maps our points (1-D in our case) into a non-linear form for example \(\phi{(x)} = (1, x, x^2)^T\). The weight \(\text{w}\) now should be in form of \((w_0, w_1, w_2)^T\). In this case, our function will look like \(t = \text{w}^T \phi{(\text{X})} = w_0 + w_1 x + w_2 x^2\), where \(w_0\) is the bias (so the basis function should provide a \(1\) component for the bias in the result like ours). It’s now in non-linear form! Let’s perform it on our data with basis function:</p>
+<p>There could be many different forms of such non-linear functions, but for convenience, we need to unify them into a linear form: \(t = \text{w}^T \phi{(\text{X})}\). The \(\phi\) here is the so called <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">basis function</a>, it maps our points (1-D in our case) into a non-linear form for example \(\phi{(x)} = (1, x, x^2)^T\). The weight \(\text{w}\) now should be in form of \((w_0, w_1, w_2)^T\). In this case, our function will look like \(t = \text{w}^T \phi{(\text{X})} = w_0 + w_1 x + w_2 x^2\), where \(w_0\) is the bias (so the basis function should provide a \(1\) component for the bias in the result like ours). It’s now in non-linear form! Let’s perform it on our data with basis function:</p>
 <p>$$ \phi{(x)} = (\phi_{0} (x), \phi_{1} (x), \phi_{2} (x), …) $$</p>
 <p>where</p>
 <p>$$<br>\begin{align} \phi_{0} (x) &amp; = 1 \\  \phi_{2n - 1} (x) &amp; = \frac{\cos{(2 \pi nx)}}{n} \\ \phi_{2n} (x) &amp; = \frac{\sin{(2 \pi nx)}}{n} \end{align}<br>$$</p>
@@ -331,7 +331,8 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 <p>At \( n = 1 \), the curve fits the trianing points not bad. When it increases to \( 3 \) and \( 5 \), the fitting looks much better. But after \( n = 7 \), things become out of control. The curves begin to “tremble” locally, they seem to try to fit every point in the training set. As a human, we definitely know that the correct result should look like the \( n = 3\) or \( n = 5 \) cases. That is, if we give the curve of \( n = 17 \) some test points, the curve will ouput worse results than the \( n = 3 \) or \( n = 5 \) cases, although it could better fit the training points. Such situation is called <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">overfittting</a>.</p>
 <p>The comparison of training and testing error rate is shown in the belowing picture. The <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">mean squared error</a> is utilized here. It’s obvious that training MSE decreased all the time, but testing MSE experienced decreasement firstly, then dramatically increased.</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_4.png" width="256"></p>
-<h2 id="Summary">Summary</h2><p>Therefore, in least squares regression, more complex models (e.g. larger\( n \)) don’t always mean better predication results. Both selection of basis function and overfitting are chanllenges. I will review some other more general methods in the future. Hope this article helps you :D</p>
+<h2 id="Summary">Summary</h2><p>Therefore, in least squares regression, more complex models (e.g. larger\( n \)) don’t always mean better predication results. Both selection of basis function and overfitting are chanllenges. I will provide more deeper principles of least squares regression in next article. Some more general methods will also be introduced in the future. Hope they can help you :D</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/tree/master/Regression" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis function</a><br>[4] <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">Overfitting</a><br>[5] <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">Mean Squared Error</a></p>
 </span>
       
     </div>
@@ -392,8 +393,8 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/05/least-squares-regression/"
-           data-title="[ML Review] Least Squares Regression" data-url="http://tongsucn.com/2015/11/05/least-squares-regression/">
+      <div class="ds-thread" data-thread-key="2015/11/05/ML-Review-Least-Squares-Regression-I/"
+           data-title="[ML Review] Least Squares Regression I" data-url="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/">
       </div>
     
   </div>
@@ -538,7 +539,7 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear"><span class="nav-number">2.</span> <span class="nav-text">Linear</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Non-linear"><span class="nav-number">3.</span> <span class="nav-text">Non-linear</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear"><span class="nav-number">2.</span> <span class="nav-text">Linear</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Non-linear"><span class="nav-number">3.</span> <span class="nav-text">Non-linear</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
