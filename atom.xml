@@ -4,7 +4,7 @@
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://tongsucn.com/"/>
-  <updated>2015-11-11T14:36:04.000Z</updated>
+  <updated>2015-11-13T22:05:24.000Z</updated>
   <id>http://tongsucn.com/</id>
   
   <author>
@@ -15,13 +15,131 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[[ML Review] Least Squares Regression I]]></title>
-    <link href="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/"/>
-    <id>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/</id>
+    <title><![CDATA[[ML Review] Ridge Regression & Regularization]]></title>
+    <link href="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/"/>
+    <id>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</id>
+    <published>2015-11-11T10:18:52.000Z</published>
+    <updated>2015-11-13T22:05:24.000Z</updated>
+    <content type="html"><![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<h2 id="Introduction">Introduction</h2><p>In the <a href="/2015/11/05/ML-Review-Least-Squares-Regression">previous post</a>, the Least Squares Regression (LSR) is reviewed. But the last shown example overfits when the frequency becomes higher (the basis function maps input points into higher dimensional feature space). This post will review a method called Ridge Regression against such overfitting. Furthermore, the concept of regularization will also be introduced.</p>
+<h2 id="Ridge_Regression">Ridge Regression</h2><p>Before formally introduction to the Ridge Regression, let’s firstly think about, why overfitting happens in LSR. In our previous example, when frequency is \( 1 \), the trained function is not “flexible” enough. It can only express one pair of “wave crest” and “wave trough” within our training data’s range. Because of such limitation, the optimization have to compromise. Calculate a minimum error and getting a “trend description” as the final result.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png" width="256"></p>
+<p>When the frequency increases to a larger number, the result functions become quite flexible. There are enough local “crest” and “trough” to fit the training points, which lead to local “trembling”, or in other words, overfitting. Our goal is now clear, we need to suppress such local “trembling” and keep its generally trend.</p>
+<p>In our error function: \( E(\text{w}) = \left|\left| t - \text{w}^T \text{X} \right|\right|^2 \), with the increasement of basis function mapped feature space’s dimensional, the only changed thing is the weighting vector \( \text{w} \)’s dimension. If we penalize \( \text{w} \)’s size (number of dimension), results would be better: \( E_{ridge} (\text{w}) = \left|\left| t - \text{w}^T \text{X} \right|\right|^2 + \lambda \left|\left| \text{w} \right|\right|^2 \). Given a suitable \( \lambda \) (scalar, talk about its value selection later), higher \( \text{w} \) size will be penalized and “trembling” will be suppressed.</p>
+<p>Not quite intuitive? Assume that \( \text{w}_{opt} \) is the optimized result from LSR error function \( E(\text{w}) \). But it could not be the minimum-value-point in Ridge Regression error function \( E_{ridge} (\text{w}) \) because of the insertion of \( \lambda \left|\left| \text{w}_{opt} \right|\right|^2 \). Therefore to achieve the minimum error value, the optimization procedure will adjust each component value in weighting vector \( \text{w} \). Let’s look at the comparison of variance (the table below). After observation we can find that the variance of components in each weighting vector decreased, which means the local “tremblings” are suppressed.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">frequency</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">9</th>
+<th style="text-align:center">11</th>
+<th style="text-align:center">13</th>
+<th style="text-align:center">15</th>
+<th style="text-align:center">17</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\( \lambda = 0 \) variance</td>
+<td style="text-align:center">0.0342</td>
+<td style="text-align:center">0.0774</td>
+<td style="text-align:center">0.0551</td>
+<td style="text-align:center">0.1171</td>
+<td style="text-align:center">0.0532</td>
+<td style="text-align:center">4.0241</td>
+<td style="text-align:center">7.8691</td>
+<td style="text-align:center">40.2198</td>
+<td style="text-align:center">92.4461</td>
+</tr>
+<tr>
+<td style="text-align:center">\( \lambda = 2 \) variance</td>
+<td style="text-align:center">0.0323</td>
+<td style="text-align:center">0.0610</td>
+<td style="text-align:center">0.0387</td>
+<td style="text-align:center">0.0289</td>
+<td style="text-align:center">0.0227</td>
+<td style="text-align:center">0.0187</td>
+<td style="text-align:center">0.0160</td>
+<td style="text-align:center">0.0139</td>
+<td style="text-align:center">0.0123</td>
+</tr>
+<tr>
+<td style="text-align:center">\( \lambda = 50 \) variance</td>
+<td style="text-align:center">0.0122</td>
+<td style="text-align:center">0.0096</td>
+<td style="text-align:center">0.0060</td>
+<td style="text-align:center">0.0043</td>
+<td style="text-align:center">0.0034</td>
+<td style="text-align:center">0.0028</td>
+<td style="text-align:center">0.0024</td>
+<td style="text-align:center">0.0021</td>
+<td style="text-align:center">0.0018</td>
+</tr>
+</tbody>
+</table>
+<p>The penalizing from \( \lambda \) is reduced for a lower error. It will also be easy to imply:</p>
+<p>$$<br>\begin{align} &amp; \lambda \rightarrow 0 &amp; \Rightarrow \ \ \ \ &amp; \text{w}_{ridge} \rightarrow \text{w}_{LSR} \\ &amp; \lambda \rightarrow \infty &amp; \Rightarrow \ \ \ \ &amp; \text{w}_{ridge} \rightarrow 0 \end{align}<br>$$</p>
+<p>So everything should be clear, the optimization of \( E_{ridge} (\text{w}) \) is similar with the LSR (do the formula derivation yourself :D). Result should be:</p>
+<p>$$<br>\hat{\text{w}} = (\text{X} \text{X}^T + \lambda \text{I})^{-1} \text{X} t<br>$$</p>
+<p>Here is a <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/ridge_regression.py" target="_blank" rel="external">simple python implementation</a> and the MATLAB plot:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_train</span><span class="params">(self, freq)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Perform train on input training data.</span><br><span class="line">    Args:</span><br><span class="line">        freq: Frequency for Fourier basis function: scalar</span><br><span class="line">    Returns:</span><br><span class="line">        Result trained weight vector, numpy.ndarray: (2 * freq + 1) x 1</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Mapping with basis function.</span></span><br><span class="line">    ext_pnt = self.fourier_basis(self.train_data, freq)</span><br><span class="line">    penalize = self.lam * np.eye(ext_pnt.shape[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w.</span></span><br><span class="line">    weight = np.dot(np.transpose(ext_pnt), ext_pnt) + penalize</span><br><span class="line">    weight = np.dot(np.linalg.inv(weight), np.transpose(ext_pnt))</span><br><span class="line">    <span class="keyword">return</span> np.dot(weight, self.train_label)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_test</span><span class="params">(self, weight, freq, test_data, test_label)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Perform test on input testing data.</span><br><span class="line">    Args:</span><br><span class="line">        weight: The trained weight, numpy.ndarray: (2 * freq + 1) x 1</span><br><span class="line">        freq: The frequency for Fourier basis function: scalar</span><br><span class="line">        test_data: Test data points, numpy.ndarray: num x 1</span><br><span class="line">        test_label: Test data labels, numpy.ndarray: num x 1</span><br><span class="line">    Returns:</span><br><span class="line">        Test error, mean squared error is utilized: scalar</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Mapping with basis function.</span></span><br><span class="line">    ext_pnt = self.fourier_basis(test_data, freq)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Testing and calculating error.</span></span><br><span class="line">    test_res = np.dot(ext_pnt, weight)</span><br><span class="line">    <span class="keyword">return</span> self._mse(test_res, test_label)</span><br></pre></td></tr></table></figure>
+<p>As above mentioned, the result with lambda 0 shows the same result with LSR.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_1.png" width="256"></p>
+<p>The result with lambda 2 looks much better, the overfitting problem is well suppressed and the generally trend is also preserved.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_2.png" width="256"></p>
+<p>All the results with lambda 50 look similar. Although the overfitting problem is solved, but such suppression also causes a loss to precision.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_3.png" width="256"></p>
+<h2 id="Regularization_and_Selection_of_\(_\lambda_\)">Regularization and Selection of \( \lambda \)</h2><p>Ridge Regression introduces a method to prevent overfitting. This method penalizes the size of weighting vector \( \text{w} \) with a suitable coefficient \( \lambda \). Such method, is called <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a>. As above description, a “suitable” \( \lambda \) is the key to get a correct result. This chapter will introduce some information about regularization and the selection of \( \lambda \).</p>
+<h3 id="Regularization">Regularization</h3><p><a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Wikipedia</a>:</p>
+<p><em>Regularization, in mathematics and statistics and particularly in the fields of machine learning and inverse problems, refers to a process of introducing additional information in order to solve an ill-posed problem or to prevent overfitting.</em></p>
+<p>The most common “introduced information” in Machine Learning is appending a variable to the error function, which is composed of the penalizing coefficient and <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a> or <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a> form weighting vector. Our Ridge Regression use the L2-norm of the weighting vector.</p>
+<p>Except Ridge Regression, there are also other methods utilizing the regularization. For example, <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a>, which use L1-norm of weighting vector. (Maybe I would talk about it in the future posts)</p>
+<h3 id="Selection_of_\(_\lambda_\)">Selection of \( \lambda \)</h3><p>Of course, the value of \( \lambda \) could be obtained by empirical knowledge, but this is not always the good choice (or we can just say it’s a bad idea).</p>
+<p>A good solution is that trying \( \lambda \) with different values on some training sets and testing sets. But the problem is, in general, good training testing sets could be very expensive. Therefore, with one single training/test set, we can utilize the <a href="https://goo.gl/kesv1H" target="_blank" rel="external">cross-validation</a>.</p>
+<p>Among different types of cross-validation, the most intuitive one is the “leave-one-out” cross-validation. At first, it equally divides the data sets into \( n \) subsets. Select one of these subsets as the test set, and the remaining subsets are the training sets. Doing the training/testing for n times (with different testing sets), then a relative more suitable \( \lambda \) value is obtained.</p>
+<p>“Leave-one-out” cross-validation is a kind of <a href="https://goo.gl/wDEXjt" target="_blank" rel="external">exhaustive cross-validation</a>. There are still some non-exhaustive cross-validation like “k-fold” cross-validation.</p>
+<h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. In next post I will review the kernel trick with the help of Ridge Regression. Hope they can help you :D</p>
+<p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="http://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/9-1.pdf" target="_blank" rel="external">Ridge Regression</a><br>[4] <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a><br>[5] <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a><br>[6] <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a><br>[7] <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a><br>[7] <a href="https://goo.gl/BKKNg5" target="_blank" rel="external">Cross-validation</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript]]>
+    </summary>
+    
+      <category term="algorithms" scheme="http://tongsucn.com/tags/algorithms/"/>
+    
+      <category term="machine learning" scheme="http://tongsucn.com/tags/machine-learning/"/>
+    
+      <category term="mean squared error" scheme="http://tongsucn.com/tags/mean-squared-error/"/>
+    
+      <category term="regression" scheme="http://tongsucn.com/tags/regression/"/>
+    
+      <category term="regularization" scheme="http://tongsucn.com/tags/regularization/"/>
+    
+      <category term="ridge regression" scheme="http://tongsucn.com/tags/ridge-regression/"/>
+    
+      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[[ML Review] Least Squares Regression]]></title>
+    <link href="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/"/>
+    <id>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</id>
     <published>2015-11-05T21:32:20.000Z</published>
-    <updated>2015-11-11T14:36:04.000Z</updated>
-    <content type="html"><![CDATA[<script tpye"text="" x-mathjax-config"="">
-MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
+    <updated>2015-11-13T20:24:14.000Z</updated>
+    <content type="html"><![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
 <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 
@@ -30,9 +148,9 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 <p>It is obvious that we need to use some points to calculate the weight and bias. Such points named training sets. In general, training sets contain two parts: some data points \(\text{X} = [x_1, …, x_N] \) and their labels (or target values) \( t = [t_1, …, t_N] \). The formula becomes \( w^T \text{X} + w_0 = t \). In most cases we can write it as \( \widetilde{\text{w}}^T \widetilde{\text{X}} = t \), where \( \widetilde{\text{w}} = [w, w_0]^T \), \( \widetilde{\text{X}} = [\widetilde{x}_1, …, \widetilde{x}_N] \) and \( {\widetilde{x}}_i = [x_i, 1]^T \).</p>
 <p>How to calculate \( \widetilde{\text{w}} \) now? Let’s consider about it from another perspective. If a suitable \( \widetilde{\text{w}} \) is given, we can easily calculate a set of labels \( t^\prime \) for the above training set \( \widetilde{\text{X}} \). But in general the components in \( t - t^\prime \) cannot be zero because the points don’t always (or we can say never) fit perfectly. (See the picture below, click to enlarge)</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_1.png" width="256"></p>
-<p>In other words, if there exists a \( \widetilde{\text{w}} \), which makes the difference between \( t^\prime \) and \( t \) minimal, then this linear function with \( \widetilde{\text{w}} \) can “best” describe these points. Such \( \widetilde{\text{w}} \) is what we want. Therefore we can get it via computing the derivative of \( E(\widetilde{\text{w}}) = \left|\left| \widetilde{\text{w}}^T \widetilde{\text{X}}- t \right|\right|^2  \):</p>
+<p>In other words, if there exists a \( \widetilde{\text{w}} \), which makes the difference between \( t^\prime \) and \( t \) minimal, then this linear function with \( \widetilde{\text{w}} \) can “best” describe these points. Such \( \widetilde{\text{w}} \) is what we want. Therefore we can get it via computing the derivative of error function \( E(\widetilde{\text{w}}) = \left|\left| \widetilde{\text{w}}^T \widetilde{\text{X}}- t \right|\right|^2  \):</p>
 <p>$$<br>\begin{align} &amp;&amp; \frac{\partial E(\widetilde{\text{w}})}{\partial \widetilde{\text{w}}} &amp; = 2 \widetilde{\text{X}} (\widetilde{\text{w}}^T \widetilde{\text{X}} - t) \stackrel{!}{=} 0 \\ &amp; \Rightarrow &amp; \widetilde{\text{X}} \widetilde{\text{X}}^T \widetilde{\text{w}} &amp; = \widetilde{\text{X}} t \\ &amp; \Rightarrow &amp; \quad \widetilde{\text{w}} &amp; = (\widetilde{\text{X}} \widetilde{\text{X}}^T)^{-1} \widetilde{\text{X}} t \end{align}<br>$$</p>
-<p>The <a href="https://github.com/tongsucn/MachineLearningPractice/tree/master/Regression" target="_blank" rel="external">Python code</a>. (Python 3 + numpy)</p>
+<p>The <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a>. (Python 3 + numpy)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">training_data_point = ...</span><br><span class="line">training_data_label = ...</span><br><span class="line">training_data_num = ...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsr_train</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Training least squares regression (linear).</span><br><span class="line">    Returns:</span><br><span class="line">        The weights w (2 x 1).</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Extending data points with an additional dimensional of value one</span></span><br><span class="line">    ext_points = ext_data(training_data_point, training_data_num)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w</span></span><br><span class="line">    res_w = np.dot(ext_points, np.transpose(ext_points))</span><br><span class="line">    res_w = np.dot(np.linalg.inv(res_w), ext_points)</span><br><span class="line">    <span class="keyword">return</span> np.dot(res_w, np.transpose(training_data_label))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ext_data</span><span class="params">(target_data, length, axis=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Extending data points with an additional dimension of value one.</span><br><span class="line">    Args:</span><br><span class="line">        target_data: The 1-D data points to be extended (num x 1).</span><br><span class="line">        length: The number of input data points (scalar).</span><br><span class="line">        axis: The dimension to be extended, 0 by default.</span><br><span class="line">    Returns:</span><br><span class="line">        The extended data points (num x 2).</span><br><span class="line">    """</span></span><br><span class="line">    one = np.ones((length, <span class="number">1</span>)) <span class="keyword">if</span> axis <span class="keyword">else</span> np.ones((<span class="number">1</span>, length))</span><br><span class="line">    <span class="keyword">return</span> np.concatenate((target_data, one), axis)</span><br></pre></td></tr></table></figure>
 <p>Let’s see its result on a given training set:</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_2.png" width="256"></p>
@@ -44,17 +162,17 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsr_train</span><span class="params">(freq)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Training least squares regression (non-linear).</span><br><span class="line">    Returns:</span><br><span class="line">        The weights w ((2 x freq + 1) x 1).</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Extending data points with an additional dimensional of value one</span></span><br><span class="line">    ext_points = basis_function(training_data_point, training_data_num, freq)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w</span></span><br><span class="line">    res_w = np.dot(ext_points, np.transpose(ext_points))</span><br><span class="line">    res_w = np.dot(np.linalg.inv(res_w), ext_points)</span><br><span class="line">    <span class="keyword">return</span> np.dot(res_w, np.transpose(training_data_label))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">basis_func</span><span class="params">(input_data, data_num, freq)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Mapping 1-D data points using basis function</span><br><span class="line">    Args:</span><br><span class="line">        input_data: The 1-D data points (1 x data_num).</span><br><span class="line">        data_num: The number of input data points (scalar).</span><br><span class="line">        freq: The frequency, used to calculate components number (scalar).</span><br><span class="line">    Returns:</span><br><span class="line">        The mapped data points ((2 x freq + 1) x data_num).</span><br><span class="line">    """</span></span><br><span class="line">    nf_points = np.ndarray((<span class="number">2</span> * freq + <span class="number">1</span>, data_num))</span><br><span class="line">    nf_points[<span class="number">0</span>, :] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>, freq + <span class="number">1</span>):</span><br><span class="line">        nf_points[<span class="number">2</span> * k - <span class="number">1</span>, :] = np.cos(<span class="number">2</span> * np.pi * k * input_data) / k</span><br><span class="line">        nf_points[<span class="number">2</span> * k, :] = np.sin(<span class="number">2</span> * np.pi * k * input_data) / k</span><br><span class="line">    <span class="keyword">return</span> nf_points</span><br></pre></td></tr></table></figure>
 <p>Let’s see the results with different \( n \) values (i.e. different frequency values).</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png" width="256"></p>
-<p>At \( n = 1 \), the curve fits the trianing points not bad. When it increases to \( 3 \) and \( 5 \), the fitting looks much better. But after \( n = 7 \), things become out of control. The curves begin to “tremble” locally, they seem to try to fit every point in the training set. As a human, we definitely know that the correct result should look like the \( n = 3\) or \( n = 5 \) cases. That is, if we give the curve of \( n = 17 \) some test points, the curve will ouput worse results than the \( n = 3 \) or \( n = 5 \) cases, although it could better fit the training points. Such situation is called <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">overfittting</a>.</p>
+<p>At \( n = 1 \), the curve fits the trianing points not bad. When it increases to \( 3 \) and \( 5 \), the fitting looks much better. But after \( n = 7 \), things become out of control. The curves begin to “tremble” locally, they seem to try to fit every point in the training set. As a human, we definitely know that the correct result should look like the \( n = 3\) or \( n = 5 \) cases. That is, if we give the curve of \( n = 17 \) some test points, the curve will output worse results than the \( n = 3 \) or \( n = 5 \) cases, although it could better fit the training points. Such situation is called <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">overfittting</a>.</p>
 <p>The comparison of training and testing error rate is shown in the belowing picture. The <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">mean squared error</a> is utilized here. It’s obvious that training MSE decreased all the time, but testing MSE experienced decreasement firstly, then dramatically increased.</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_4.png" width="256"></p>
-<h2 id="Summary">Summary</h2><p>Therefore, in least squares regression, more complex models (e.g. larger\( n \)) don’t always mean better predication results. Both selection of basis function and overfitting are chanllenges. I will provide more deeper principles of least squares regression in next article. Some more general methods will also be introduced in the future. Hope they can help you :D</p>
-<h2 id="Reference">Reference</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/tree/master/Regression" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis function</a><br>[4] <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">Overfitting</a><br>[5] <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">Mean Squared Error</a></p>
+<h2 id="Summary">Summary</h2><p>Therefore, in least squares regression, more complex models (e.g. larger \( n \)) don’t always mean better predication results. Both selection of basis function and overfitting are challenges. I will review a solution to overfitting of least squares regression in next article. Some more general methods will also be introduced in the future. Hope they can help you :D</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis function</a><br>[4] <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">Overfitting</a><br>[5] <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">Mean Squared Error</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<script tpye"text="" x-mathjax-config"="">
-MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
+    <![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
-<script type="text/javasc]]>
+<script type="text/javascript]]>
     </summary>
     
       <category term="algorithms" scheme="http://tongsucn.com/tags/algorithms/"/>

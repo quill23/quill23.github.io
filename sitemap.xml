@@ -2,8 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/</loc>
-    <lastmod>2015-11-11T14:36:04.000Z</lastmod>
+    <loc>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</loc>
+    <lastmod>2015-11-13T22:05:24.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</loc>
+    <lastmod>2015-11-13T20:24:14.000Z</lastmod>
   </url>
   
   <url>

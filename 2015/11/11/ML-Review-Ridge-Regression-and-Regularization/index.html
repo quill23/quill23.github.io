@@ -1,0 +1,866 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="UA-60473900-1" />
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="algorithms,machine learning,mean squared error,regression,regularization,ridge regression," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="TTimeline" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the previous post, the Least Squares Regression (LSR) is reviewed. But the last shown example overfits when the frequen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[ML Review] Ridge Regression & Regularization">
+<meta property="og:url" content="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/index.html">
+<meta property="og:site_name" content="TTimeline">
+<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the previous post, the Least Squares Regression (LSR) is reviewed. But the last shown example overfits when the frequen">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_1.png">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_2.png">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_3.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[ML Review] Ridge Regression & Regularization">
+<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the previous post, the Least Squares Regression (LSR) is reviewed. But the last shown example overfits when the frequen">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title> [ML Review] Ridge Regression & Regularization | TTimeline </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">TTimeline</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">星辰大海</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="#" class="st-search-show-outputs">
+            
+              <i class="menu-item-icon fa fa-search icon-next-search"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'jy3PX1o1iuNHjezMPEs4','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [ML Review] Ridge Regression & Regularization
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-11-11T10:18:52+00:00" content="2015-11-11">
+              2015-11-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/blog/" itemprop="url" rel="index">
+                    <span itemprop="name">blog</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/11/ML-Review-Ridge-Regression-and-Regularization/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<h2 id="Introduction">Introduction</h2><p>In the <a href="/2015/11/05/ML-Review-Least-Squares-Regression">previous post</a>, the Least Squares Regression (LSR) is reviewed. But the last shown example overfits when the frequency becomes higher (the basis function maps input points into higher dimensional feature space). This post will review a method called Ridge Regression against such overfitting. Furthermore, the concept of regularization will also be introduced.</p>
+<h2 id="Ridge_Regression">Ridge Regression</h2><p>Before formally introduction to the Ridge Regression, let’s firstly think about, why overfitting happens in LSR. In our previous example, when frequency is \( 1 \), the trained function is not “flexible” enough. It can only express one pair of “wave crest” and “wave trough” within our training data’s range. Because of such limitation, the optimization have to compromise. Calculate a minimum error and getting a “trend description” as the final result.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png" width="256"></p>
+<p>When the frequency increases to a larger number, the result functions become quite flexible. There are enough local “crest” and “trough” to fit the training points, which lead to local “trembling”, or in other words, overfitting. Our goal is now clear, we need to suppress such local “trembling” and keep its generally trend.</p>
+<p>In our error function: \( E(\text{w}) = \left|\left| t - \text{w}^T \text{X} \right|\right|^2 \), with the increasement of basis function mapped feature space’s dimensional, the only changed thing is the weighting vector \( \text{w} \)’s dimension. If we penalize \( \text{w} \)’s size (number of dimension), results would be better: \( E_{ridge} (\text{w}) = \left|\left| t - \text{w}^T \text{X} \right|\right|^2 + \lambda \left|\left| \text{w} \right|\right|^2 \). Given a suitable \( \lambda \) (scalar, talk about its value selection later), higher \( \text{w} \) size will be penalized and “trembling” will be suppressed.</p>
+<p>Not quite intuitive? Assume that \( \text{w}_{opt} \) is the optimized result from LSR error function \( E(\text{w}) \). But it could not be the minimum-value-point in Ridge Regression error function \( E_{ridge} (\text{w}) \) because of the insertion of \( \lambda \left|\left| \text{w}_{opt} \right|\right|^2 \). Therefore to achieve the minimum error value, the optimization procedure will adjust each component value in weighting vector \( \text{w} \). Let’s look at the comparison of variance (the table below). After observation we can find that the variance of components in each weighting vector decreased, which means the local “tremblings” are suppressed.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">frequency</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">9</th>
+<th style="text-align:center">11</th>
+<th style="text-align:center">13</th>
+<th style="text-align:center">15</th>
+<th style="text-align:center">17</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\( \lambda = 0 \) variance</td>
+<td style="text-align:center">0.0342</td>
+<td style="text-align:center">0.0774</td>
+<td style="text-align:center">0.0551</td>
+<td style="text-align:center">0.1171</td>
+<td style="text-align:center">0.0532</td>
+<td style="text-align:center">4.0241</td>
+<td style="text-align:center">7.8691</td>
+<td style="text-align:center">40.2198</td>
+<td style="text-align:center">92.4461</td>
+</tr>
+<tr>
+<td style="text-align:center">\( \lambda = 2 \) variance</td>
+<td style="text-align:center">0.0323</td>
+<td style="text-align:center">0.0610</td>
+<td style="text-align:center">0.0387</td>
+<td style="text-align:center">0.0289</td>
+<td style="text-align:center">0.0227</td>
+<td style="text-align:center">0.0187</td>
+<td style="text-align:center">0.0160</td>
+<td style="text-align:center">0.0139</td>
+<td style="text-align:center">0.0123</td>
+</tr>
+<tr>
+<td style="text-align:center">\( \lambda = 50 \) variance</td>
+<td style="text-align:center">0.0122</td>
+<td style="text-align:center">0.0096</td>
+<td style="text-align:center">0.0060</td>
+<td style="text-align:center">0.0043</td>
+<td style="text-align:center">0.0034</td>
+<td style="text-align:center">0.0028</td>
+<td style="text-align:center">0.0024</td>
+<td style="text-align:center">0.0021</td>
+<td style="text-align:center">0.0018</td>
+</tr>
+</tbody>
+</table>
+<p>The penalizing from \( \lambda \) is reduced for a lower error. It will also be easy to imply:</p>
+<p>$$<br>\begin{align} &amp; \lambda \rightarrow 0 &amp; \Rightarrow \ \ \ \ &amp; \text{w}_{ridge} \rightarrow \text{w}_{LSR} \\ &amp; \lambda \rightarrow \infty &amp; \Rightarrow \ \ \ \ &amp; \text{w}_{ridge} \rightarrow 0 \end{align}<br>$$</p>
+<p>So everything should be clear, the optimization of \( E_{ridge} (\text{w}) \) is similar with the LSR (do the formula derivation yourself :D). Result should be:</p>
+<p>$$<br>\hat{\text{w}} = (\text{X} \text{X}^T + \lambda \text{I})^{-1} \text{X} t<br>$$</p>
+<p>Here is a <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/ridge_regression.py" target="_blank" rel="external">simple python implementation</a> and the MATLAB plot:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_train</span><span class="params">(self, freq)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Perform train on input training data.</span><br><span class="line">    Args:</span><br><span class="line">        freq: Frequency for Fourier basis function: scalar</span><br><span class="line">    Returns:</span><br><span class="line">        Result trained weight vector, numpy.ndarray: (2 * freq + 1) x 1</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Mapping with basis function.</span></span><br><span class="line">    ext_pnt = self.fourier_basis(self.train_data, freq)</span><br><span class="line">    penalize = self.lam * np.eye(ext_pnt.shape[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w.</span></span><br><span class="line">    weight = np.dot(np.transpose(ext_pnt), ext_pnt) + penalize</span><br><span class="line">    weight = np.dot(np.linalg.inv(weight), np.transpose(ext_pnt))</span><br><span class="line">    <span class="keyword">return</span> np.dot(weight, self.train_label)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_test</span><span class="params">(self, weight, freq, test_data, test_label)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Perform test on input testing data.</span><br><span class="line">    Args:</span><br><span class="line">        weight: The trained weight, numpy.ndarray: (2 * freq + 1) x 1</span><br><span class="line">        freq: The frequency for Fourier basis function: scalar</span><br><span class="line">        test_data: Test data points, numpy.ndarray: num x 1</span><br><span class="line">        test_label: Test data labels, numpy.ndarray: num x 1</span><br><span class="line">    Returns:</span><br><span class="line">        Test error, mean squared error is utilized: scalar</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Mapping with basis function.</span></span><br><span class="line">    ext_pnt = self.fourier_basis(test_data, freq)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Testing and calculating error.</span></span><br><span class="line">    test_res = np.dot(ext_pnt, weight)</span><br><span class="line">    <span class="keyword">return</span> self._mse(test_res, test_label)</span><br></pre></td></tr></table></figure>
+<p>As above mentioned, the result with lambda 0 shows the same result with LSR.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_1.png" width="256"></p>
+<p>The result with lambda 2 looks much better, the overfitting problem is well suppressed and the generally trend is also preserved.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_2.png" width="256"></p>
+<p>All the results with lambda 50 look similar. Although the overfitting problem is solved, but such suppression also causes a loss to precision.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RR_3.png" width="256"></p>
+<h2 id="Regularization_and_Selection_of_\(_\lambda_\)">Regularization and Selection of \( \lambda \)</h2><p>Ridge Regression introduces a method to prevent overfitting. This method penalizes the size of weighting vector \( \text{w} \) with a suitable coefficient \( \lambda \). Such method, is called <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a>. As above description, a “suitable” \( \lambda \) is the key to get a correct result. This chapter will introduce some information about regularization and the selection of \( \lambda \).</p>
+<h3 id="Regularization">Regularization</h3><p><a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Wikipedia</a>:</p>
+<p><em>Regularization, in mathematics and statistics and particularly in the fields of machine learning and inverse problems, refers to a process of introducing additional information in order to solve an ill-posed problem or to prevent overfitting.</em></p>
+<p>The most common “introduced information” in Machine Learning is appending a variable to the error function, which is composed of the penalizing coefficient and <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a> or <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a> form weighting vector. Our Ridge Regression use the L2-norm of the weighting vector.</p>
+<p>Except Ridge Regression, there are also other methods utilizing the regularization. For example, <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a>, which use L1-norm of weighting vector. (Maybe I would talk about it in the future posts)</p>
+<h3 id="Selection_of_\(_\lambda_\)">Selection of \( \lambda \)</h3><p>Of course, the value of \( \lambda \) could be obtained by empirical knowledge, but this is not always the good choice (or we can just say it’s a bad idea).</p>
+<p>A good solution is that trying \( \lambda \) with different values on some training sets and testing sets. But the problem is, in general, good training testing sets could be very expensive. Therefore, with one single training/test set, we can utilize the <a href="https://goo.gl/kesv1H" target="_blank" rel="external">cross-validation</a>.</p>
+<p>Among different types of cross-validation, the most intuitive one is the “leave-one-out” cross-validation. At first, it equally divides the data sets into \( n \) subsets. Select one of these subsets as the test set, and the remaining subsets are the training sets. Doing the training/testing for n times (with different testing sets), then a relative more suitable \( \lambda \) value is obtained.</p>
+<p>“Leave-one-out” cross-validation is a kind of <a href="https://goo.gl/wDEXjt" target="_blank" rel="external">exhaustive cross-validation</a>. There are still some non-exhaustive cross-validation like “k-fold” cross-validation.</p>
+<h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. In next post I will review the kernel trick with the help of Ridge Regression. Hope they can help you :D</p>
+<p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="http://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/9-1.pdf" target="_blank" rel="external">Ridge Regression</a><br>[4] <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a><br>[5] <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a><br>[6] <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a><br>[7] <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a><br>[7] <a href="https://goo.gl/BKKNg5" target="_blank" rel="external">Cross-validation</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/algorithms/" rel="tag">#algorithms</a>
+          
+            <a href="/tags/machine-learning/" rel="tag">#machine learning</a>
+          
+            <a href="/tags/mean-squared-error/" rel="tag">#mean squared error</a>
+          
+            <a href="/tags/regression/" rel="tag">#regression</a>
+          
+            <a href="/tags/regularization/" rel="tag">#regularization</a>
+          
+            <a href="/tags/ridge-regression/" rel="tag">#ridge regression</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/05/ML-Review-Least-Squares-Regression/" rel="next" title="[ML Review] Least Squares Regression">
+                <i class="fa fa-chevron-left"></i> [ML Review] Least Squares Regression
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/11/11/ML-Review-Ridge-Regression-and-Regularization/"
+           data-title="[ML Review] Ridge Regression & Regularization" data-url="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="https://avatars3.githubusercontent.com/u/3276150?v=3&s=460" alt="Tong Su" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Tong Su</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">A grain of star stuff</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://de.linkedin.com/pub/tong-su/60/67a/63b" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> LinkedIn
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/tongsucn" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/tong.su.184" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> facebook
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/iquill" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:tongsu.cn@gmail.com" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> mail
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ridge_Regression"><span class="nav-number">2.</span> <span class="nav-text">Ridge Regression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regularization_and_Selection_of_\(_\lambda_\)"><span class="nav-number">3.</span> <span class="nav-text">Regularization and Selection of \( \lambda \)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Regularization"><span class="nav-number">3.1.</span> <span class="nav-text">Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Selection_of_\(_\lambda_\)"><span class="nav-number">3.2.</span> <span class="nav-text">Selection of \( \lambda \)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tong Su</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tongsucn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+
+  
+  
+
+</body>
+</html>

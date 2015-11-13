@@ -57,31 +57,31 @@
 
 
 
-<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlinMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
 
 
 
-IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest r">
+IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[ML Review] Least Squares Regression I">
-<meta property="og:url" content="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/index.html">
+<meta property="og:title" content="[ML Review] Least Squares Regression">
+<meta property="og:url" content="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/index.html">
 <meta property="og:site_name" content="TTimeline">
-<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlinMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
 
 
 
-IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest r">
+IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest">
 <meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_1.png">
 <meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_2.png">
 <meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png">
 <meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_4.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[ML Review] Least Squares Regression I">
-<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlinMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+<meta name="twitter:title" content="[ML Review] Least Squares Regression">
+<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
 
 
 
-IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest r">
+IntroductionIn machine learning, regression is utilized to predict continuous values. Least squares regression is one of the simplest">
 
 
 
@@ -93,7 +93,7 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
   };
 </script>
 
-  <title> [ML Review] Least Squares Regression I | TTimeline </title>
+  <title> [ML Review] Least Squares Regression | TTimeline </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
@@ -249,7 +249,7 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
             
             
               
-                [ML Review] Least Squares Regression I
+                [ML Review] Least Squares Regression
               
             
           </h1>
@@ -284,8 +284,8 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/05/ML-Review-Least-Squares-Regression-I/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/05/ML-Review-Least-Squares-Regression-I/" itemprop="commentsCount"></span>
+                <a href="/2015/11/05/ML-Review-Least-Squares-Regression/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/05/ML-Review-Least-Squares-Regression/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -304,8 +304,8 @@ IntroductionIn machine learning, regression is utilized to predict continuous va
       
 
       
-        <span itemprop="articleBody"><script tpye"text="" x-mathjax-config"="">
-MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
+        <span itemprop="articleBody"><script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
 <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 
@@ -314,9 +314,9 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 <p>It is obvious that we need to use some points to calculate the weight and bias. Such points named training sets. In general, training sets contain two parts: some data points \(\text{X} = [x_1, …, x_N] \) and their labels (or target values) \( t = [t_1, …, t_N] \). The formula becomes \( w^T \text{X} + w_0 = t \). In most cases we can write it as \( \widetilde{\text{w}}^T \widetilde{\text{X}} = t \), where \( \widetilde{\text{w}} = [w, w_0]^T \), \( \widetilde{\text{X}} = [\widetilde{x}_1, …, \widetilde{x}_N] \) and \( {\widetilde{x}}_i = [x_i, 1]^T \).</p>
 <p>How to calculate \( \widetilde{\text{w}} \) now? Let’s consider about it from another perspective. If a suitable \( \widetilde{\text{w}} \) is given, we can easily calculate a set of labels \( t^\prime \) for the above training set \( \widetilde{\text{X}} \). But in general the components in \( t - t^\prime \) cannot be zero because the points don’t always (or we can say never) fit perfectly. (See the picture below, click to enlarge)</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_1.png" width="256"></p>
-<p>In other words, if there exists a \( \widetilde{\text{w}} \), which makes the difference between \( t^\prime \) and \( t \) minimal, then this linear function with \( \widetilde{\text{w}} \) can “best” describe these points. Such \( \widetilde{\text{w}} \) is what we want. Therefore we can get it via computing the derivative of \( E(\widetilde{\text{w}}) = \left|\left| \widetilde{\text{w}}^T \widetilde{\text{X}}- t \right|\right|^2  \):</p>
+<p>In other words, if there exists a \( \widetilde{\text{w}} \), which makes the difference between \( t^\prime \) and \( t \) minimal, then this linear function with \( \widetilde{\text{w}} \) can “best” describe these points. Such \( \widetilde{\text{w}} \) is what we want. Therefore we can get it via computing the derivative of error function \( E(\widetilde{\text{w}}) = \left|\left| \widetilde{\text{w}}^T \widetilde{\text{X}}- t \right|\right|^2  \):</p>
 <p>$$<br>\begin{align} &amp;&amp; \frac{\partial E(\widetilde{\text{w}})}{\partial \widetilde{\text{w}}} &amp; = 2 \widetilde{\text{X}} (\widetilde{\text{w}}^T \widetilde{\text{X}} - t) \stackrel{!}{=} 0 \\ &amp; \Rightarrow &amp; \widetilde{\text{X}} \widetilde{\text{X}}^T \widetilde{\text{w}} &amp; = \widetilde{\text{X}} t \\ &amp; \Rightarrow &amp; \quad \widetilde{\text{w}} &amp; = (\widetilde{\text{X}} \widetilde{\text{X}}^T)^{-1} \widetilde{\text{X}} t \end{align}<br>$$</p>
-<p>The <a href="https://github.com/tongsucn/MachineLearningPractice/tree/master/Regression" target="_blank" rel="external">Python code</a>. (Python 3 + numpy)</p>
+<p>The <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a>. (Python 3 + numpy)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">training_data_point = ...</span><br><span class="line">training_data_label = ...</span><br><span class="line">training_data_num = ...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsr_train</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Training least squares regression (linear).</span><br><span class="line">    Returns:</span><br><span class="line">        The weights w (2 x 1).</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Extending data points with an additional dimensional of value one</span></span><br><span class="line">    ext_points = ext_data(training_data_point, training_data_num)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w</span></span><br><span class="line">    res_w = np.dot(ext_points, np.transpose(ext_points))</span><br><span class="line">    res_w = np.dot(np.linalg.inv(res_w), ext_points)</span><br><span class="line">    <span class="keyword">return</span> np.dot(res_w, np.transpose(training_data_label))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ext_data</span><span class="params">(target_data, length, axis=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Extending data points with an additional dimension of value one.</span><br><span class="line">    Args:</span><br><span class="line">        target_data: The 1-D data points to be extended (num x 1).</span><br><span class="line">        length: The number of input data points (scalar).</span><br><span class="line">        axis: The dimension to be extended, 0 by default.</span><br><span class="line">    Returns:</span><br><span class="line">        The extended data points (num x 2).</span><br><span class="line">    """</span></span><br><span class="line">    one = np.ones((length, <span class="number">1</span>)) <span class="keyword">if</span> axis <span class="keyword">else</span> np.ones((<span class="number">1</span>, length))</span><br><span class="line">    <span class="keyword">return</span> np.concatenate((target_data, one), axis)</span><br></pre></td></tr></table></figure>
 <p>Let’s see its result on a given training set:</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_2.png" width="256"></p>
@@ -328,11 +328,11 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsr_train</span><span class="params">(freq)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Training least squares regression (non-linear).</span><br><span class="line">    Returns:</span><br><span class="line">        The weights w ((2 x freq + 1) x 1).</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Extending data points with an additional dimensional of value one</span></span><br><span class="line">    ext_points = basis_function(training_data_point, training_data_num, freq)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w</span></span><br><span class="line">    res_w = np.dot(ext_points, np.transpose(ext_points))</span><br><span class="line">    res_w = np.dot(np.linalg.inv(res_w), ext_points)</span><br><span class="line">    <span class="keyword">return</span> np.dot(res_w, np.transpose(training_data_label))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">basis_func</span><span class="params">(input_data, data_num, freq)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Mapping 1-D data points using basis function</span><br><span class="line">    Args:</span><br><span class="line">        input_data: The 1-D data points (1 x data_num).</span><br><span class="line">        data_num: The number of input data points (scalar).</span><br><span class="line">        freq: The frequency, used to calculate components number (scalar).</span><br><span class="line">    Returns:</span><br><span class="line">        The mapped data points ((2 x freq + 1) x data_num).</span><br><span class="line">    """</span></span><br><span class="line">    nf_points = np.ndarray((<span class="number">2</span> * freq + <span class="number">1</span>, data_num))</span><br><span class="line">    nf_points[<span class="number">0</span>, :] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>, freq + <span class="number">1</span>):</span><br><span class="line">        nf_points[<span class="number">2</span> * k - <span class="number">1</span>, :] = np.cos(<span class="number">2</span> * np.pi * k * input_data) / k</span><br><span class="line">        nf_points[<span class="number">2</span> * k, :] = np.sin(<span class="number">2</span> * np.pi * k * input_data) / k</span><br><span class="line">    <span class="keyword">return</span> nf_points</span><br></pre></td></tr></table></figure>
 <p>Let’s see the results with different \( n \) values (i.e. different frequency values).</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_3.png" width="256"></p>
-<p>At \( n = 1 \), the curve fits the trianing points not bad. When it increases to \( 3 \) and \( 5 \), the fitting looks much better. But after \( n = 7 \), things become out of control. The curves begin to “tremble” locally, they seem to try to fit every point in the training set. As a human, we definitely know that the correct result should look like the \( n = 3\) or \( n = 5 \) cases. That is, if we give the curve of \( n = 17 \) some test points, the curve will ouput worse results than the \( n = 3 \) or \( n = 5 \) cases, although it could better fit the training points. Such situation is called <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">overfittting</a>.</p>
+<p>At \( n = 1 \), the curve fits the trianing points not bad. When it increases to \( 3 \) and \( 5 \), the fitting looks much better. But after \( n = 7 \), things become out of control. The curves begin to “tremble” locally, they seem to try to fit every point in the training set. As a human, we definitely know that the correct result should look like the \( n = 3\) or \( n = 5 \) cases. That is, if we give the curve of \( n = 17 \) some test points, the curve will output worse results than the \( n = 3 \) or \( n = 5 \) cases, although it could better fit the training points. Such situation is called <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">overfittting</a>.</p>
 <p>The comparison of training and testing error rate is shown in the belowing picture. The <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">mean squared error</a> is utilized here. It’s obvious that training MSE decreased all the time, but testing MSE experienced decreasement firstly, then dramatically increased.</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_4.png" width="256"></p>
-<h2 id="Summary">Summary</h2><p>Therefore, in least squares regression, more complex models (e.g. larger\( n \)) don’t always mean better predication results. Both selection of basis function and overfitting are chanllenges. I will provide more deeper principles of least squares regression in next article. Some more general methods will also be introduced in the future. Hope they can help you :D</p>
-<h2 id="Reference">Reference</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/tree/master/Regression" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis function</a><br>[4] <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">Overfitting</a><br>[5] <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">Mean Squared Error</a></p>
+<h2 id="Summary">Summary</h2><p>Therefore, in least squares regression, more complex models (e.g. larger \( n \)) don’t always mean better predication results. Both selection of basis function and overfitting are challenges. I will review a solution to overfitting of least squares regression in next article. Some more general methods will also be introduced in the future. Hope they can help you :D</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis function</a><br>[4] <a href="https://en.wikipedia.org/wiki/Overfitting" target="_blank" rel="external">Overfitting</a><br>[5] <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="external">Mean Squared Error</a></p>
 </span>
       
     </div>
@@ -368,6 +368,10 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/" rel="prev" title="[ML Review] Ridge Regression & Regularization">
+                [ML Review] Ridge Regression & Regularization <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -393,8 +397,8 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/05/ML-Review-Least-Squares-Regression-I/"
-           data-title="[ML Review] Least Squares Regression I" data-url="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression-I/">
+      <div class="ds-thread" data-thread-key="2015/11/05/ML-Review-Least-Squares-Regression/"
+           data-title="[ML Review] Least Squares Regression" data-url="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/">
       </div>
     
   </div>
@@ -438,7 +442,7 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -452,7 +456,7 @@ MathJax.Hub.Config({tex2jax: {inlinMath: [['\\(', '\\)']]}});
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
