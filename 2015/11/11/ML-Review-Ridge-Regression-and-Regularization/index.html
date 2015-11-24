@@ -39,7 +39,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="algorithms,machine learning,mean squared error,regression,regularization,ridge regression," />
+  <meta name="keywords" content="algorithms,machine learning,regression,regularization,ridge regression," />
 
 
 
@@ -390,7 +390,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>A good solution is that trying \( \lambda \) with different values on some training sets and testing sets. But the problem is, in general, good training testing sets could be very expensive. Therefore, with one single training/test set, we can utilize the <a href="https://goo.gl/kesv1H" target="_blank" rel="external">cross-validation</a>.</p>
 <p>Among different types of cross-validation, the most intuitive one is the “leave-one-out” cross-validation. At first, it equally divides the data sets into \( n \) subsets. Select one of these subsets as the test set, and the remaining subsets are the training sets. Doing the training/testing for n times (with different testing sets), then a relative more suitable \( \lambda \) value is obtained.</p>
 <p>“Leave-one-out” cross-validation is a kind of <a href="https://goo.gl/wDEXjt" target="_blank" rel="external">exhaustive cross-validation</a>. There are still some non-exhaustive cross-validation like “k-fold” cross-validation.</p>
-<h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. In next post I will review the kernel trick with the help of Ridge Regression. Hope they can help you :D</p>
+<h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. Hope they can help you :D</p>
 <p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="http://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/9-1.pdf" target="_blank" rel="external">Ridge Regression</a><br>[4] <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a><br>[5] <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a><br>[6] <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a><br>[7] <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a><br>[7] <a href="https://goo.gl/BKKNg5" target="_blank" rel="external">Cross-validation</a></p>
 </span>
       
@@ -403,8 +403,6 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
             <a href="/tags/algorithms/" rel="tag">#algorithms</a>
           
             <a href="/tags/machine-learning/" rel="tag">#machine learning</a>
-          
-            <a href="/tags/mean-squared-error/" rel="tag">#mean squared error</a>
           
             <a href="/tags/regression/" rel="tag">#regression</a>
           
@@ -426,6 +424,10 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/24/ML-Review-Regression-from-Probability-Perspective/" rel="prev" title="[ML Review] Regression from Probabilistic Perspective">
+                [ML Review] Regression from Probabilistic Perspective <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -497,7 +499,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -511,7 +513,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>

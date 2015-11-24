@@ -39,7 +39,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="TTimeline" />
+  <meta name="keywords" content="Bayesian,Gaussian distribution,least squares regression,likelihood,machine learning,maximum a posteriori,maximum likelihood estimation,posterior,prior,probability interpretation,regression,ridge regression," />
 
 
 
@@ -57,24 +57,28 @@
 
 
 
-<meta name="description" content="Hello world!
-This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.
-It will be greatly honoured if my words here could help you.
-Tong">
+<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionI have reviewed the Least Squares Regression (LSR) and Ridge Regression (RR). In this post, I will review them again, but">
 <meta property="og:type" content="article">
-<meta property="og:title" content="First Post">
-<meta property="og:url" content="http://tongsucn.com/2015/03/06/First-Post/index.html">
+<meta property="og:title" content="[ML Review] Regression from Probabilistic Perspective">
+<meta property="og:url" content="http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/index.html">
 <meta property="og:site_name" content="TTimeline">
-<meta property="og:description" content="Hello world!
-This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.
-It will be greatly honoured if my words here could help you.
-Tong">
+<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionI have reviewed the Least Squares Regression (LSR) and Ridge Regression (RR). In this post, I will review them again, but">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPP_1.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="First Post">
-<meta name="twitter:description" content="Hello world!
-This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.
-It will be greatly honoured if my words here could help you.
-Tong">
+<meta name="twitter:title" content="[ML Review] Regression from Probabilistic Perspective">
+<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionI have reviewed the Least Squares Regression (LSR) and Ridge Regression (RR). In this post, I will review them again, but">
 
 
 
@@ -86,7 +90,7 @@ Tong">
   };
 </script>
 
-  <title> First Post | TTimeline </title>
+  <title> [ML Review] Regression from Probabilistic Perspective | TTimeline </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
@@ -242,7 +246,7 @@ Tong">
             
             
               
-                First Post
+                [ML Review] Regression from Probabilistic Perspective
               
             
           </h1>
@@ -251,8 +255,8 @@ Tong">
         <div class="post-meta">
           <span class="post-time">
             Posted on
-            <time itemprop="dateCreated" datetime="2015-03-06T08:30:20+00:00" content="2015-03-06">
-              2015-03-06
+            <time itemprop="dateCreated" datetime="2015-11-24T09:22:20+00:00" content="2015-11-24">
+              2015-11-24
             </time>
           </span>
 
@@ -277,8 +281,8 @@ Tong">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/03/06/First-Post/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/06/First-Post/" itemprop="commentsCount"></span>
+                <a href="/2015/11/24/ML-Review-Regression-from-Probability-Perspective/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/24/ML-Review-Regression-from-Probability-Perspective/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -297,32 +301,88 @@ Tong">
       
 
       
-        <span itemprop="articleBody"><p>Hello world!</p>
-<p>This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.</p>
-<p>It will be greatly honoured if my words here could help you.</p>
-<p>Tong Su</p>
-<p>MathJax Test:</p>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+        <span itemprop="articleBody"><script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 
-<p>$$E=mc^2$$</p>
+<h2 id="Introduction">Introduction</h2><p>I have reviewed the <a href="/2015/11/05/ML-Review-Least-Squares-Regression/">Least Squares Regression</a> (LSR) and <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/">Ridge Regression</a> (RR). In this post, I will review them again, but from probabilistic perspective.</p>
+<h2 id="Probabilistic_Interpretation:_LSR">Probabilistic Interpretation: LSR</h2><p>In LSR and RR, we optimized the results by minimizing the error (sum of squares error was utilized). We can find the training error cannot be 0, it’s not quite precise. This is because in general, the data sets contain noise. Therefore, if we want to consider the LSR and RR from probability perspective, we could use probability to express those noise. For example, given a training set, let’s assume the noise of points in this set have the Gaussian distribution like this (The Gaussian distribution curve has been adjusted for better appearance):</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPP_1.png" width="256"></p>
+<p>Our target function values \( t \) is now:</p>
+<p>$$<br>t = \widetilde{\text{w}}^T \widetilde{\text{x}} + \epsilon = y(\text{x}, \text{w}) + \epsilon<br>$$</p>
+<p>\( \epsilon \) here is the noise, which has Gaussian distribution, \( y(\text{x}, \text{w}) \) is the target curve (or ideally we can say it’s the curve without error). Transforming it into probability form, for every single point \( \text{x} \) it will look like:</p>
+<p>$$<br>p(t | \text{x}, \text{w}, \beta) = \mathcal{N} (t | y(\text{x}, \text{w}), \beta^{-1})<br>$$</p>
+<p>It means that given a point \( \text{x} \), relative weighting vector \( \text{w} \) and the precision parameter \( \beta \) (talk about it later), the target value \( t \) has Gaussian distribution. Therefore, to learn the weighting vector \( \text{w}\) and \( \beta \), we can just maximize the conditional likelihood with the training set \( \text{X} \) and its label set \( \text{t}\):</p>
+<p>$$<br>p(\text{t} | \text{X}, \text{w}, \beta) = \prod_{n = 1}^{N} {\mathcal{N} (t_n | y(\text{x}_n, \text{w}), \beta^{-1})}<br>$$</p>
+<p>For simplifying the calculation, writing it in \( \log \) form:</p>
+<p>$$<br>\begin{align} \log{p(\text{t} | \text{X}, \text{w}, \beta)} &amp; = \sum_{n = 1}^{N} {\log{\mathcal{N} (t_n | y(\text{x}_n, \text{w}), \beta^{-1})}} \\ &amp; = \sum_{n = 1}^{N} { \left[\log{( \sqrt{\frac{\beta} {2 \pi}})} - \frac{\beta} {2} \{ y(\text{w}_n, \text{w}) - t_n \}^2 \right] } \\ &amp; = \frac{N} {2} \log{\beta} - \frac{N} {2} \log{(2 \pi)} - \frac{\beta} {2} \sum_{n = 1}^{N} \{ t_n - y(\text{x}_n, \text{w}) \} \end{align}<br>$$</p>
+<p>where \( \frac{N} {2} \log{\beta} - \frac{N} {2} \log{(2 \pi)} \) is a constant, and the rest is the sum of squares error. Calculating its Gradient w.r.t \( \text{w} \) we can get:</p>
+<p>$$<br>\begin{align} \nabla_{\text{w}} \log {p(\text{t} | \text{X}, \text{w}, \beta)} &amp; = - \beta \sum_{n = 1}^{N} {(t_n - \text{w}^T \phi(\text{x}_n)) \phi(\text{x}_n)} \stackrel{!}{=} 0 \\ &amp; \Rightarrow \sum_{n - 1}^{N} {t_n \phi(\text{x}_n)} = [\sum_{n - 1}^{N} {\phi(\text{x}_n) \phi(\text{x}_n)^T}] \text{w} \\ &amp; \Rightarrow \phi(\text{X})^T \text{t} = \phi(\text{X}) \phi(\text{X})^T \text{w} \\ &amp; \Rightarrow \hat{\text{w}} = (\phi(\text{X}) \phi(\text{X})^T)^{-1} \phi(\text{X}) \text{t} \end{align}<br>$$</p>
+<p>Does it look familiar? It’s the same with LSR’s optimization result! We should have already got a better understanding about what Linear Squares Regression is. The LSR is equivalent to <a href="https://en.wikipedia.org/wiki/Maximum_likelihood" target="_blank" rel="external">Maximum Likelihood Estimation</a> under the assumption of Gaussian noise. Now let’s take a look at the previous mentioned \( \beta \). If we calculate the gradient w.r.t \( \beta \), we can get the optimization result like this (do it yourself :D):</p>
+<p>$$<br>\frac{1} {\hat{\beta}} = \frac{1} {N} \sum_{n = 1}^{N} {[t_n - \hat{\text{w}}^T \phi(\text{x}_{n}) ]^2}<br>$$</p>
+<p>The higher precision the \( \beta \) has, the lower mean squared error the data there would be. After getting these two values, we can predict new input with the following distribution:</p>
+<p>$$<br>p(t | \text{x}, \hat{\text{w}}, \hat{\beta}) = \mathcal{N} \left( t | y(\text{x}, \hat{\text{w}}), \hat{\beta}^{-1} \right)<br>$$</p>
+<p>So far, these illustrations are still based on the <a href="https://en.wikipedia.org/wiki/Frequentist_inference" target="_blank" rel="external">frequentist approach</a>, let’s now stride towards the Bayesian approaches.</p>
+<h2 id="Probabilistic_Interpretation:_RR">Probabilistic Interpretation: RR</h2><p>Because of the equivalence between LSR and Maximum Likelihood Estimation under assumption of Gaussian noise, they also share the same challenge: overfitting. I have illustrated it in <a href="/2015/11/05/ML-Review-Least-Squares-Regression/">this post</a>. To avoid overfitting, in Ridge Regression, the regularization coefficient \( \lambda \) is involved to penalize the larger size weighting vectors. One way to get such \( \lambda \) is to take advantage of the empirical knowledge. So what is similar to “empirical knowledge” in probability field? The prior! Even so, it sounds quite abstract, let me illustrate it in formula.</p>
+<p>Firstly I want to repeat our previous question again: Given a training set \( \text{X} \) and relative labels \( \text{t} \), our goal is to learn a single weighting vector \( \text{w} \), which “best” describes the data points. To avoid overfitting, we can provide some “guidance” to our model. Such “guidance” is a prior, which describes the prior distribution of the weighting vector \( \text{w} \). <strong>ATTENTION</strong>: it is the distribution of \( \text{w} \), rather than a single value of it.</p>
+<p>Since it is a distribution, there must exist some parameters describing this distribution. We call such parameters the <a href="https://en.wikipedia.org/wiki/Hyperparameter" target="_blank" rel="external">hyperparameter</a>. For example, assume a given prior describing the \( \text{w} \) in Gaussian distribution. The hyperparameter \( \alpha = \left( m_{0}, S_{0} \right)\), where \( m_{0} \) is the mean, \( S_{0} \) is the variance. Therefore the distribution shall look like this:</p>
+<p>$$<br>p(\text{w} | \alpha) = \mathcal{N} \left(\text{w} | m_{0}, S_{0} \text{I} \right) = \left( \frac{1} {2 \pi S_{0}} \right)^{(M + 1) / 2} \exp \left(- \frac{1} {2 S_{0}} (\text{w} - m_{0})^T (\text{w} - m_{0}) \right)<br>$$</p>
+<p>Our posterior <strong>distribution</strong> over \( \text{w} \) is extended and according to the <a href="https://goo.gl/3K9Ymv" target="_blank" rel="external">Bayes’ Theorem</a>:</p>
+<p>$$<br>p(\text{w} | \text{X}, \text{t}, \beta, \alpha) \propto p(\text{t} | \text{X}, \text{w}, \beta) p(\text{w} | \alpha)<br>$$</p>
+<p>Minimizing its negative \( \log \) form:</p>
+<p>$$<br>\begin{align} - \log {p(\text{w} | \text{X}, \text{t}, \beta, \alpha)} &amp; \propto - \log{p(\text{t} | \text{X}, \text{w}, \beta)} - \log{p(\text{w} | \alpha)} \\ &amp; \propto - \log{ \prod_{n = 1}^{N} {\mathcal{N} (t_n | y(\text{x}_n, \text{w}), \beta^{-1})} } - \log{ \exp \left(- \frac{1} {2 S_{0}} (\text{w} - m_{0})^T (\text{w} - m_{0}) \right) }  \\ &amp; \propto \frac{\beta}{2} \sum_{n = 1}^{N} \{ y(\text{x}_n, \text{w}) - t_n\}^2 + \frac{1} {2 S_0} (\text{w} - m_{0})^T (\text{w} - m_{0}) + \text{const} \\ &amp; \propto \frac{\beta}{2} \left( \text{w}^T \phi(\text{X}) - \text{t} \right)^2 + \frac{1} {2 S_0} (\text{w} - m_{0})^T (\text{w} - m_{0}) + \text{const} \end{align}<br>$$</p>
+<p>Calculating the gradient we can get the optimized weighting vector \( \hat{\text{w}} \):</p>
+<p>$$<br>\begin{align} \nabla_{\text{w}} \log {p(\text{t} | \text{X}, \text{w}, \beta, \alpha)} &amp; = - \beta \sum_{n = 1}^{N} {(t_n - \text{w}^T \phi(\text{x}_n)) \phi(\text{x}_n)} + {S_{0}}^{-1} (\text{w} - m_{0}) \stackrel{!}{=} 0 \\ &amp; \Rightarrow \beta \cdot \phi(\text{X})^T \text{t}  + {S_{0}}^{-1} m_{0} = \left( \beta \cdot \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right) \text{w} \\ &amp; \Rightarrow \hat{\text{w}} = \left( \beta \cdot \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} \left( \beta \cdot \phi(\text{X})^T \text{t}  + {S_{0}}^{-1} m_{0} \right) \end{align}<br>$$</p>
+<p>The result looks quite complicated, but in general, for simplification, we often set the prior mean \( m_{0} = 0\). Then it will similar to the RR optimization result, and the regularization parameter \( \lambda \) in Ridge Regression will be equal to \( \frac{1} {S_{0} \beta} \). This is the so called <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation" target="_blank" rel="external">Maximum a posteriori (MAP) estimation</a>.</p>
+<h2 id="Summary">Summary</h2><p>So far, we have a better understanding to both of the ordinary linear regression (Least Squares Regression) and the regularized regression (Ridge Regression). The Least Squares Regression is equivalent to Maximum Likelihood Estimation under Gaussian noise assumption, and they share the same problem: overfitting. The Ridge Regression is equivalent to Maximum a Posterior estimation with a Gaussian prior distribution over weighting vector \( \text{w} \). The probabilistic interpretation to RR is already alike to the Bayesian estimation. In next post, I will try to introduce the Bayesian Curve Fitting. Hope it could help :D</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="/2015/11/05/ML-Review-Least-Squares-Regression/">Least Squares Regression</a><br>[2] <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/">Ridge Regression</a><br>[3] <a href="https://en.wikipedia.org/wiki/Maximum_likelihood" target="_blank" rel="external">Maximum Likelihood Estimation</a><br>[4] <a href="https://en.wikipedia.org/wiki/Frequentist_inference" target="_blank" rel="external">frequentist approach</a><br>[5] <a href="https://en.wikipedia.org/wiki/Hyperparameter" target="_blank" rel="external">hyperparameter</a><br>[6] <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation" target="_blank" rel="external">Maximum a posteriori (MAP) estimation</a><br>[7] <a href="https://goo.gl/3K9Ymv" target="_blank" rel="external">Bayes’ Theorem</a><br>[8] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Bayesian/" rel="tag">#Bayesian</a>
+          
+            <a href="/tags/Gaussian-distribution/" rel="tag">#Gaussian distribution</a>
+          
+            <a href="/tags/least-squares-regression/" rel="tag">#least squares regression</a>
+          
+            <a href="/tags/likelihood/" rel="tag">#likelihood</a>
+          
+            <a href="/tags/machine-learning/" rel="tag">#machine learning</a>
+          
+            <a href="/tags/maximum-a-posteriori/" rel="tag">#maximum a posteriori</a>
+          
+            <a href="/tags/maximum-likelihood-estimation/" rel="tag">#maximum likelihood estimation</a>
+          
+            <a href="/tags/posterior/" rel="tag">#posterior</a>
+          
+            <a href="/tags/prior/" rel="tag">#prior</a>
+          
+            <a href="/tags/probability-interpretation/" rel="tag">#probability interpretation</a>
+          
+            <a href="/tags/regression/" rel="tag">#regression</a>
+          
+            <a href="/tags/ridge-regression/" rel="tag">#ridge regression</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/" rel="next" title="[ML Review] Ridge Regression & Regularization">
+                <i class="fa fa-chevron-left"></i> [ML Review] Ridge Regression & Regularization
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/05/ML-Review-Least-Squares-Regression/" rel="prev" title="[ML Review] Least Squares Regression">
-                [ML Review] Least Squares Regression <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -349,8 +409,8 @@ Tong">
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/03/06/First-Post/"
-           data-title="First Post" data-url="http://tongsucn.com/2015/03/06/First-Post/">
+      <div class="ds-thread" data-thread-key="2015/11/24/ML-Review-Regression-from-Probability-Perspective/"
+           data-title="[ML Review] Regression from Probabilistic Perspective" data-url="http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/">
       </div>
     
   </div>
@@ -495,7 +555,7 @@ Tong">
               
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Probabilistic_Interpretation:_LSR"><span class="nav-number">2.</span> <span class="nav-text">Probabilistic Interpretation: LSR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Probabilistic_Interpretation:_RR"><span class="nav-number">3.</span> <span class="nav-text">Probabilistic Interpretation: RR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

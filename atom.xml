@@ -4,7 +4,7 @@
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://tongsucn.com/"/>
-  <updated>2015-11-13T22:05:24.000Z</updated>
+  <updated>2015-11-24T09:32:26.000Z</updated>
   <id>http://tongsucn.com/</id>
   
   <author>
@@ -15,11 +15,89 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[[ML Review] Regression from Probabilistic Perspective]]></title>
+    <link href="http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/"/>
+    <id>http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/</id>
+    <published>2015-11-24T09:22:20.000Z</published>
+    <updated>2015-11-24T09:32:26.000Z</updated>
+    <content type="html"><![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<h2 id="Introduction">Introduction</h2><p>I have reviewed the <a href="/2015/11/05/ML-Review-Least-Squares-Regression/">Least Squares Regression</a> (LSR) and <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/">Ridge Regression</a> (RR). In this post, I will review them again, but from probabilistic perspective.</p>
+<h2 id="Probabilistic_Interpretation:_LSR">Probabilistic Interpretation: LSR</h2><p>In LSR and RR, we optimized the results by minimizing the error (sum of squares error was utilized). We can find the training error cannot be 0, it’s not quite precise. This is because in general, the data sets contain noise. Therefore, if we want to consider the LSR and RR from probability perspective, we could use probability to express those noise. For example, given a training set, let’s assume the noise of points in this set have the Gaussian distribution like this (The Gaussian distribution curve has been adjusted for better appearance):</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPP_1.png" width="256"></p>
+<p>Our target function values \( t \) is now:</p>
+<p>$$<br>t = \widetilde{\text{w}}^T \widetilde{\text{x}} + \epsilon = y(\text{x}, \text{w}) + \epsilon<br>$$</p>
+<p>\( \epsilon \) here is the noise, which has Gaussian distribution, \( y(\text{x}, \text{w}) \) is the target curve (or ideally we can say it’s the curve without error). Transforming it into probability form, for every single point \( \text{x} \) it will look like:</p>
+<p>$$<br>p(t | \text{x}, \text{w}, \beta) = \mathcal{N} (t | y(\text{x}, \text{w}), \beta^{-1})<br>$$</p>
+<p>It means that given a point \( \text{x} \), relative weighting vector \( \text{w} \) and the precision parameter \( \beta \) (talk about it later), the target value \( t \) has Gaussian distribution. Therefore, to learn the weighting vector \( \text{w}\) and \( \beta \), we can just maximize the conditional likelihood with the training set \( \text{X} \) and its label set \( \text{t}\):</p>
+<p>$$<br>p(\text{t} | \text{X}, \text{w}, \beta) = \prod_{n = 1}^{N} {\mathcal{N} (t_n | y(\text{x}_n, \text{w}), \beta^{-1})}<br>$$</p>
+<p>For simplifying the calculation, writing it in \( \log \) form:</p>
+<p>$$<br>\begin{align} \log{p(\text{t} | \text{X}, \text{w}, \beta)} &amp; = \sum_{n = 1}^{N} {\log{\mathcal{N} (t_n | y(\text{x}_n, \text{w}), \beta^{-1})}} \\ &amp; = \sum_{n = 1}^{N} { \left[\log{( \sqrt{\frac{\beta} {2 \pi}})} - \frac{\beta} {2} \{ y(\text{w}_n, \text{w}) - t_n \}^2 \right] } \\ &amp; = \frac{N} {2} \log{\beta} - \frac{N} {2} \log{(2 \pi)} - \frac{\beta} {2} \sum_{n = 1}^{N} \{ t_n - y(\text{x}_n, \text{w}) \} \end{align}<br>$$</p>
+<p>where \( \frac{N} {2} \log{\beta} - \frac{N} {2} \log{(2 \pi)} \) is a constant, and the rest is the sum of squares error. Calculating its Gradient w.r.t \( \text{w} \) we can get:</p>
+<p>$$<br>\begin{align} \nabla_{\text{w}} \log {p(\text{t} | \text{X}, \text{w}, \beta)} &amp; = - \beta \sum_{n = 1}^{N} {(t_n - \text{w}^T \phi(\text{x}_n)) \phi(\text{x}_n)} \stackrel{!}{=} 0 \\ &amp; \Rightarrow \sum_{n - 1}^{N} {t_n \phi(\text{x}_n)} = [\sum_{n - 1}^{N} {\phi(\text{x}_n) \phi(\text{x}_n)^T}] \text{w} \\ &amp; \Rightarrow \phi(\text{X})^T \text{t} = \phi(\text{X}) \phi(\text{X})^T \text{w} \\ &amp; \Rightarrow \hat{\text{w}} = (\phi(\text{X}) \phi(\text{X})^T)^{-1} \phi(\text{X}) \text{t} \end{align}<br>$$</p>
+<p>Does it look familiar? It’s the same with LSR’s optimization result! We should have already got a better understanding about what Linear Squares Regression is. The LSR is equivalent to <a href="https://en.wikipedia.org/wiki/Maximum_likelihood" target="_blank" rel="external">Maximum Likelihood Estimation</a> under the assumption of Gaussian noise. Now let’s take a look at the previous mentioned \( \beta \). If we calculate the gradient w.r.t \( \beta \), we can get the optimization result like this (do it yourself :D):</p>
+<p>$$<br>\frac{1} {\hat{\beta}} = \frac{1} {N} \sum_{n = 1}^{N} {[t_n - \hat{\text{w}}^T \phi(\text{x}_{n}) ]^2}<br>$$</p>
+<p>The higher precision the \( \beta \) has, the lower mean squared error the data there would be. After getting these two values, we can predict new input with the following distribution:</p>
+<p>$$<br>p(t | \text{x}, \hat{\text{w}}, \hat{\beta}) = \mathcal{N} \left( t | y(\text{x}, \hat{\text{w}}), \hat{\beta}^{-1} \right)<br>$$</p>
+<p>So far, these illustrations are still based on the <a href="https://en.wikipedia.org/wiki/Frequentist_inference" target="_blank" rel="external">frequentist approach</a>, let’s now stride towards the Bayesian approaches.</p>
+<h2 id="Probabilistic_Interpretation:_RR">Probabilistic Interpretation: RR</h2><p>Because of the equivalence between LSR and Maximum Likelihood Estimation under assumption of Gaussian noise, they also share the same challenge: overfitting. I have illustrated it in <a href="/2015/11/05/ML-Review-Least-Squares-Regression/">this post</a>. To avoid overfitting, in Ridge Regression, the regularization coefficient \( \lambda \) is involved to penalize the larger size weighting vectors. One way to get such \( \lambda \) is to take advantage of the empirical knowledge. So what is similar to “empirical knowledge” in probability field? The prior! Even so, it sounds quite abstract, let me illustrate it in formula.</p>
+<p>Firstly I want to repeat our previous question again: Given a training set \( \text{X} \) and relative labels \( \text{t} \), our goal is to learn a single weighting vector \( \text{w} \), which “best” describes the data points. To avoid overfitting, we can provide some “guidance” to our model. Such “guidance” is a prior, which describes the prior distribution of the weighting vector \( \text{w} \). <strong>ATTENTION</strong>: it is the distribution of \( \text{w} \), rather than a single value of it.</p>
+<p>Since it is a distribution, there must exist some parameters describing this distribution. We call such parameters the <a href="https://en.wikipedia.org/wiki/Hyperparameter" target="_blank" rel="external">hyperparameter</a>. For example, assume a given prior describing the \( \text{w} \) in Gaussian distribution. The hyperparameter \( \alpha = \left( m_{0}, S_{0} \right)\), where \( m_{0} \) is the mean, \( S_{0} \) is the variance. Therefore the distribution shall look like this:</p>
+<p>$$<br>p(\text{w} | \alpha) = \mathcal{N} \left(\text{w} | m_{0}, S_{0} \text{I} \right) = \left( \frac{1} {2 \pi S_{0}} \right)^{(M + 1) / 2} \exp \left(- \frac{1} {2 S_{0}} (\text{w} - m_{0})^T (\text{w} - m_{0}) \right)<br>$$</p>
+<p>Our posterior <strong>distribution</strong> over \( \text{w} \) is extended and according to the <a href="https://goo.gl/3K9Ymv" target="_blank" rel="external">Bayes’ Theorem</a>:</p>
+<p>$$<br>p(\text{w} | \text{X}, \text{t}, \beta, \alpha) \propto p(\text{t} | \text{X}, \text{w}, \beta) p(\text{w} | \alpha)<br>$$</p>
+<p>Minimizing its negative \( \log \) form:</p>
+<p>$$<br>\begin{align} - \log {p(\text{w} | \text{X}, \text{t}, \beta, \alpha)} &amp; \propto - \log{p(\text{t} | \text{X}, \text{w}, \beta)} - \log{p(\text{w} | \alpha)} \\ &amp; \propto - \log{ \prod_{n = 1}^{N} {\mathcal{N} (t_n | y(\text{x}_n, \text{w}), \beta^{-1})} } - \log{ \exp \left(- \frac{1} {2 S_{0}} (\text{w} - m_{0})^T (\text{w} - m_{0}) \right) }  \\ &amp; \propto \frac{\beta}{2} \sum_{n = 1}^{N} \{ y(\text{x}_n, \text{w}) - t_n\}^2 + \frac{1} {2 S_0} (\text{w} - m_{0})^T (\text{w} - m_{0}) + \text{const} \\ &amp; \propto \frac{\beta}{2} \left( \text{w}^T \phi(\text{X}) - \text{t} \right)^2 + \frac{1} {2 S_0} (\text{w} - m_{0})^T (\text{w} - m_{0}) + \text{const} \end{align}<br>$$</p>
+<p>Calculating the gradient we can get the optimized weighting vector \( \hat{\text{w}} \):</p>
+<p>$$<br>\begin{align} \nabla_{\text{w}} \log {p(\text{t} | \text{X}, \text{w}, \beta, \alpha)} &amp; = - \beta \sum_{n = 1}^{N} {(t_n - \text{w}^T \phi(\text{x}_n)) \phi(\text{x}_n)} + {S_{0}}^{-1} (\text{w} - m_{0}) \stackrel{!}{=} 0 \\ &amp; \Rightarrow \beta \cdot \phi(\text{X})^T \text{t}  + {S_{0}}^{-1} m_{0} = \left( \beta \cdot \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right) \text{w} \\ &amp; \Rightarrow \hat{\text{w}} = \left( \beta \cdot \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} \left( \beta \cdot \phi(\text{X})^T \text{t}  + {S_{0}}^{-1} m_{0} \right) \end{align}<br>$$</p>
+<p>The result looks quite complicated, but in general, for simplification, we often set the prior mean \( m_{0} = 0\). Then it will similar to the RR optimization result, and the regularization parameter \( \lambda \) in Ridge Regression will be equal to \( \frac{1} {S_{0} \beta} \). This is the so called <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation" target="_blank" rel="external">Maximum a posteriori (MAP) estimation</a>.</p>
+<h2 id="Summary">Summary</h2><p>So far, we have a better understanding to both of the ordinary linear regression (Least Squares Regression) and the regularized regression (Ridge Regression). The Least Squares Regression is equivalent to Maximum Likelihood Estimation under Gaussian noise assumption, and they share the same problem: overfitting. The Ridge Regression is equivalent to Maximum a Posterior estimation with a Gaussian prior distribution over weighting vector \( \text{w} \). The probabilistic interpretation to RR is already alike to the Bayesian estimation. In next post, I will try to introduce the Bayesian Curve Fitting. Hope it could help :D</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="/2015/11/05/ML-Review-Least-Squares-Regression/">Least Squares Regression</a><br>[2] <a href="/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/">Ridge Regression</a><br>[3] <a href="https://en.wikipedia.org/wiki/Maximum_likelihood" target="_blank" rel="external">Maximum Likelihood Estimation</a><br>[4] <a href="https://en.wikipedia.org/wiki/Frequentist_inference" target="_blank" rel="external">frequentist approach</a><br>[5] <a href="https://en.wikipedia.org/wiki/Hyperparameter" target="_blank" rel="external">hyperparameter</a><br>[6] <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation" target="_blank" rel="external">Maximum a posteriori (MAP) estimation</a><br>[7] <a href="https://goo.gl/3K9Ymv" target="_blank" rel="external">Bayes’ Theorem</a><br>[8] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript]]>
+    </summary>
+    
+      <category term="Bayesian" scheme="http://tongsucn.com/tags/Bayesian/"/>
+    
+      <category term="Gaussian distribution" scheme="http://tongsucn.com/tags/Gaussian-distribution/"/>
+    
+      <category term="least squares regression" scheme="http://tongsucn.com/tags/least-squares-regression/"/>
+    
+      <category term="likelihood" scheme="http://tongsucn.com/tags/likelihood/"/>
+    
+      <category term="machine learning" scheme="http://tongsucn.com/tags/machine-learning/"/>
+    
+      <category term="maximum a posteriori" scheme="http://tongsucn.com/tags/maximum-a-posteriori/"/>
+    
+      <category term="maximum likelihood estimation" scheme="http://tongsucn.com/tags/maximum-likelihood-estimation/"/>
+    
+      <category term="posterior" scheme="http://tongsucn.com/tags/posterior/"/>
+    
+      <category term="prior" scheme="http://tongsucn.com/tags/prior/"/>
+    
+      <category term="probability interpretation" scheme="http://tongsucn.com/tags/probability-interpretation/"/>
+    
+      <category term="regression" scheme="http://tongsucn.com/tags/regression/"/>
+    
+      <category term="ridge regression" scheme="http://tongsucn.com/tags/ridge-regression/"/>
+    
+      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[[ML Review] Ridge Regression & Regularization]]></title>
     <link href="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/"/>
     <id>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</id>
     <published>2015-11-11T10:18:52.000Z</published>
-    <updated>2015-11-13T22:05:24.000Z</updated>
+    <updated>2015-11-14T14:21:12.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -106,7 +184,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>A good solution is that trying \( \lambda \) with different values on some training sets and testing sets. But the problem is, in general, good training testing sets could be very expensive. Therefore, with one single training/test set, we can utilize the <a href="https://goo.gl/kesv1H" target="_blank" rel="external">cross-validation</a>.</p>
 <p>Among different types of cross-validation, the most intuitive one is the “leave-one-out” cross-validation. At first, it equally divides the data sets into \( n \) subsets. Select one of these subsets as the test set, and the remaining subsets are the training sets. Doing the training/testing for n times (with different testing sets), then a relative more suitable \( \lambda \) value is obtained.</p>
 <p>“Leave-one-out” cross-validation is a kind of <a href="https://goo.gl/wDEXjt" target="_blank" rel="external">exhaustive cross-validation</a>. There are still some non-exhaustive cross-validation like “k-fold” cross-validation.</p>
-<h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. In next post I will review the kernel trick with the help of Ridge Regression. Hope they can help you :D</p>
+<h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. Hope they can help you :D</p>
 <p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="http://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/9-1.pdf" target="_blank" rel="external">Ridge Regression</a><br>[4] <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a><br>[5] <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a><br>[6] <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a><br>[7] <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a><br>[7] <a href="https://goo.gl/BKKNg5" target="_blank" rel="external">Cross-validation</a></p>
 ]]></content>
     <summary type="html">
@@ -119,8 +197,6 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
       <category term="algorithms" scheme="http://tongsucn.com/tags/algorithms/"/>
     
       <category term="machine learning" scheme="http://tongsucn.com/tags/machine-learning/"/>
-    
-      <category term="mean squared error" scheme="http://tongsucn.com/tags/mean-squared-error/"/>
     
       <category term="regression" scheme="http://tongsucn.com/tags/regression/"/>
     
@@ -137,7 +213,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/"/>
     <id>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</id>
     <published>2015-11-05T21:32:20.000Z</published>
-    <updated>2015-11-13T20:24:14.000Z</updated>
+    <updated>2015-11-13T21:53:54.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
