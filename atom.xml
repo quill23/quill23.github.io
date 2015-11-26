@@ -4,7 +4,7 @@
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://tongsucn.com/"/>
-  <updated>2015-11-24T09:32:26.000Z</updated>
+  <updated>2015-11-24T14:24:09.000Z</updated>
   <id>http://tongsucn.com/</id>
   
   <author>
@@ -15,11 +15,99 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[[ML Review] Bayesian Curve Regression]]></title>
+    <link href="http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/"/>
+    <id>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</id>
+    <published>2015-11-24T09:44:20.000Z</published>
+    <updated>2015-11-24T14:24:09.000Z</updated>
+    <content type="html"><![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<h2 id="Introduction">Introduction</h2><p>Based on the <a href="/2015/11/24/ML-Review-Regression-from-Probability-Perspective/">previous post</a>, we will go deeper into regression from probability perspective in this post.</p>
+<p><img src="http://i3.kym-cdn.com/photos/images/newsfeed/000/531/557/a88.jpg"></p>
+<p>In LSR and RR, our training results are some single values of weighting vector \( \text{w} \), with which we can predict new input points simply by using basis function and dot product. The RR works already quite well, but the value selection of regularization coefficient is really intractable. To deal with this challenge, Bayesian curve fitting could help.</p>
+<h2 id="Linear_Regression_in_Bayesian_Approach">Linear Regression in Bayesian Approach</h2><h3 id="Training">Training</h3><p>Following is the training phase of Bayesian Curve Fitting. Given a training set \( \text{X} = \{ \text{x}_{1}, …, \text{x}_{N} \} \), relative labels \( \text{t} = \{ t_{1}, …, t_{N} \} \) and the prior distribution hyperparameter (Gaussian here) \( \alpha = (m_0, S_0) \), specifying a suitable basis function \( \phi \). Our goal is the distribution of the weighting vector:</p>
+<ol>
+<li><p>Calculating the optimized weighting vector \( \text{w}_{opt} \) with LSR:</p>
+<p> $$<br> \text{w}_{opt} = \left( \phi(\text{X}) \phi(\text{X})^T \right )^{-1} \phi(\text{X}) \text{t}<br> $$</p>
+</li>
+<li><p>Calculating the precision \( \beta \):</p>
+<p> $$<br> \frac{1} {\beta} = \frac{1} {N} \sum_{n = 1}^{N} {[t_n - \text{w}_{opt}^T \phi(\text{x}_{n}) ]^2}<br> $$</p>
+</li>
+<li><p>Calculating the MAP solution of \( \hat{\text{w}} \):</p>
+<p> $$<br> \hat{\text{w}} = \left( \beta \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} \left( \beta \phi(\text{X})^T \text{t} + {S_{0}}^{-1} m_{0} \right)<br> $$</p>
+<p> For simplifying the calculation, we often assume that the mean \( m_0 \) in hyperparameter is \( 0 \):</p>
+<p> $$<br> \hat{\text{w}} = \left( \beta \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} \beta \phi(\text{X})^T \text{t}<br> $$</p>
+</li>
+<li><p>Calculating the posterior distribution:</p>
+<p> We have assumed the Gaussian noise (likelihood) and a prior Gaussian distribution over weighting vector. These will result in a Gaussian posterior distribution over the result weighting vector \( \hat{\text{w}} \), because our prior and likelihood here are conjugate. The prior is also called <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">conjugate prior</a>. In this post I don’t want to explain it, which could make you puzzled. But it will be introduced in some future posts.</p>
+<p> OK let’s go back to our training phase. The MAP solution \( \hat{\text{w}} \) is still a single value. Think about it: our posterior distribution is Gaussian, so this \( \hat{\text{w}} \) should be the mean \( m_N \) of the posterior distribution! It indicates the maximum value in this multivariable Gaussian distribution, because it is the optimized result from MAP. Therefore:</p>
+<p> $$ m_N = \hat{\text{w}} $$</p>
+<p> And the covariance matrix:</p>
+<p> $$ S_N = \left( \beta \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} $$</p>
+</li>
+</ol>
+<h3 id="Predictive_Distribution">Predictive Distribution</h3><p>So far, the training phase is finished. But wait, the weighting vector is now actually a distribution, how can we predict an input point with a distribution? According to Mr. Bishop’s book <em>Pattern Recognition and Machine Learning</em> (PRML), the answer is calculating the integral (continuous) / summation (discrete) over \( \text{w} \)’s distribution!</p>
+<p>$$<br>p(t | x, \text{X}, \text{t}) = \int { p(t | x, \text{w}) p(\text{w} | \text{X}, \text{t}, \beta, \alpha) \text{dw} }<br>$$</p>
+<p>\( p(t | x, \text{w}) = \mathcal{N} (t | y(\text{x}, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
+<p>$$<br>p(t | x, \text{X}, \text{t}) = \mathcal{N} (t | m(x), s^2(x))<br>$$</p>
+<p>where mean and variance are</p>
+<p>$$<br>m(x) = \beta \phi(x)^T \text{S} \phi(X) \text{t} \\<br>s(x)^2 = \beta^{-1} + \phi(x) \text{S} \phi(x)<br>$$</p>
+<p>and \( \text{S} \) is the regularized covariance matrix:</p>
+<p>$$<br>\text{S} = S_N = (\beta \phi(X) \phi(X)^T + S_{0}^{-1} \text{I})^{-1}<br>$$</p>
+<p>To be noticed is that both of the mean and the variance depend on the input point. It means that the input points could also affect the distribution. Let me show you an example. The <a href="">data</a> I have prepared is not quite good, so I highly recommend you read the example on PRML.</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]BCR_1.png" ,="" width="256"></p>
+<p>This example illustrates a simulated procedure of training (but our training is not implemented like this). The blue curve is our optimized result. The two black thiner curves show the variance \(s(x)\) of every points on the blue curve. They have been rescaled suitably to make them visible, so for example it <strong>DOES NOT</strong> mean that the point at \(x = 0\) has variance about \(1.25\).</p>
+<p>It is obvious that in the first figure the variances at the points are quite low, and other places are relative higher. With more points inserted, the variances become “well-distributed”. (Remember I have adjust the scale to make the black curves visible, so the variances of the first two points in the rest two figures look higher than in the first figure).</p>
+<h2 id="Summary">Summary</h2><p>In this post we reviewed the Bayesian Curve Fitting. Bayesian is quite general and intuitive, what we need are just the training set and a prior. But unfortunately, <em>in general, it could be impossible or impractical to derive the posterior distribution analytically</em>. However, it is still possible to approximate the posterior by approximate Bayesian inference methods, which will be reviewed in the future.</p>
+<p>Furthermore, the Gaussian noise and a Gaussian prior distribution over weighting vector are assumed here. That is, there could exist other distribution combinations. Or we can say under other noise distribution assumptions, we may should change the prior distribution. In the future I would also review some other distribution and relative conjugate priors. Hope it could help :D</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/poly_data_gaussian_noise.txt" target="_blank" rel="external">data</a><br>[2] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[3] <a href="https://en.wikipedia.org/wiki/Bayesian_linear_regression" target="_blank" rel="external">Bayesian Linear Regression</a><br>[4] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript]]>
+    </summary>
+    
+      <category term="Bayesian" scheme="http://tongsucn.com/tags/Bayesian/"/>
+    
+      <category term="Bayesian Curve Fitting" scheme="http://tongsucn.com/tags/Bayesian-Curve-Fitting/"/>
+    
+      <category term="Bayesian Linear Regression" scheme="http://tongsucn.com/tags/Bayesian-Linear-Regression/"/>
+    
+      <category term="Gaussian distribution" scheme="http://tongsucn.com/tags/Gaussian-distribution/"/>
+    
+      <category term="conjugate prior" scheme="http://tongsucn.com/tags/conjugate-prior/"/>
+    
+      <category term="likelihood" scheme="http://tongsucn.com/tags/likelihood/"/>
+    
+      <category term="machine learning" scheme="http://tongsucn.com/tags/machine-learning/"/>
+    
+      <category term="maximum likelihood" scheme="http://tongsucn.com/tags/maximum-likelihood/"/>
+    
+      <category term="maximum-a-posteriori" scheme="http://tongsucn.com/tags/maximum-a-posteriori/"/>
+    
+      <category term="posterior" scheme="http://tongsucn.com/tags/posterior/"/>
+    
+      <category term="prior" scheme="http://tongsucn.com/tags/prior/"/>
+    
+      <category term="probability" scheme="http://tongsucn.com/tags/probability/"/>
+    
+      <category term="regression" scheme="http://tongsucn.com/tags/regression/"/>
+    
+      <category term="tech" scheme="http://tongsucn.com/categories/tech/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[[ML Review] Regression from Probabilistic Perspective]]></title>
     <link href="http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/"/>
     <id>http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/</id>
     <published>2015-11-24T09:22:20.000Z</published>
-    <updated>2015-11-24T09:32:26.000Z</updated>
+    <updated>2015-11-24T09:38:35.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -88,7 +176,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     
       <category term="ridge regression" scheme="http://tongsucn.com/tags/ridge-regression/"/>
     
-      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
+      <category term="tech" scheme="http://tongsucn.com/categories/tech/"/>
     
   </entry>
   
@@ -97,7 +185,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/"/>
     <id>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</id>
     <published>2015-11-11T10:18:52.000Z</published>
-    <updated>2015-11-14T14:21:12.000Z</updated>
+    <updated>2015-11-24T09:39:25.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -204,7 +292,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     
       <category term="ridge regression" scheme="http://tongsucn.com/tags/ridge-regression/"/>
     
-      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
+      <category term="tech" scheme="http://tongsucn.com/categories/tech/"/>
     
   </entry>
   
@@ -213,7 +301,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/"/>
     <id>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</id>
     <published>2015-11-05T21:32:20.000Z</published>
-    <updated>2015-11-13T21:53:54.000Z</updated>
+    <updated>2015-11-24T09:38:14.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -263,7 +351,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     
       <category term="regression" scheme="http://tongsucn.com/tags/regression/"/>
     
-      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
+      <category term="tech" scheme="http://tongsucn.com/categories/tech/"/>
     
   </entry>
   
