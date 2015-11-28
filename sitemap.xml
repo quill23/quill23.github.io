@@ -2,18 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</loc>
-    <lastmod>2015-11-24T14:24:09.000Z</lastmod>
+    <loc>http://tongsucn.com/2015/11/28/ML-Review-Linear-Basis-Function-Models/</loc>
+    <lastmod>2015-11-28T14:18:00.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</loc>
-    <lastmod>2015-11-24T09:39:25.000Z</lastmod>
+    <lastmod>2015-11-28T13:03:15.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</loc>
+    <lastmod>2015-11-24T14:34:41.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/</loc>
-    <lastmod>2015-11-24T09:38:35.000Z</lastmod>
+    <lastmod>2015-11-24T14:11:41.000Z</lastmod>
   </url>
   
   <url>

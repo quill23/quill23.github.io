@@ -4,7 +4,7 @@
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://tongsucn.com/"/>
-  <updated>2015-11-24T14:24:09.000Z</updated>
+  <updated>2015-11-28T14:18:00.000Z</updated>
   <id>http://tongsucn.com/</id>
   
   <author>
@@ -15,11 +15,66 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[[ML Review] Linear Basis Function Models]]></title>
+    <link href="http://tongsucn.com/2015/11/28/ML-Review-Linear-Basis-Function-Models/"/>
+    <id>http://tongsucn.com/2015/11/28/ML-Review-Linear-Basis-Function-Models/</id>
+    <published>2015-11-28T10:18:52.000Z</published>
+    <updated>2015-11-28T14:18:00.000Z</updated>
+    <content type="html"><![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<h2 id="Introduction">Introduction</h2><p>In the previous posts, We have met two linear basis functions: polynomial basis function and Fourier basis function. In this one, I will review and summary them and try making some comparison. The following basis functions are implemented in <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/lbasis.py" target="_blank" rel="external">python code</a>.</p>
+<h2 id="Polynomial_Basis_Function">Polynomial Basis Function</h2><p>$$<br>\phi_{poly} (x) = (\phi_{0} (x), …, \phi_{M - 1} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\phi_{i} (x) = x^{i}, i \in \{0, …, M - 1\}<br>$$</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_1.png" ,="" width="256"></p>
+<h2 id="Gaussian_Basis_Function">Gaussian Basis Function</h2><p>$$<br>\phi_{gaussian} (x) = (\phi_{0} (x), …, \phi_{M - 1} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\phi_{i} (x) = \exp \left\{ - \frac{(x - \mu_{i})^{2}} {2 s^{2}} \right\}, i \in \{0, …, M - 1\}<br>$$</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_2.png" ,="" width="256"></p>
+<h2 id="Fourier_Basis_Function">Fourier Basis Function</h2><p>$$<br>\phi_{fourier} (x) = (\phi_{0} (x), …, \phi_{2M} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\begin{align} \phi_{0} (x) &amp; = 1 \\ \phi_{2n - 1} (x) &amp; = \frac{\cos{(2 \pi nx)}} {n} \\ \phi_{2n} (x) &amp; = \frac{\sin{(2 \pi nx)}} {n},  n \in \{1, …, M\} \end{align}<br>$$</p>
+<p>\(\mu_{i}\) and \(s\) control the function’s location and scale (width).</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_3.png" ,="" width="256"></p>
+<h2 id="Sigmoid_Basis_Function">Sigmoid Basis Function</h2><p>$$<br>\phi_{sigmoid} (x) = (\phi_{0} (x), …, \phi_{M - 1} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\begin{align} \phi_{i} (x) &amp; = \sigma \left( \frac{x - \mu_{i}} {s} \right), i \in \{0, …, M - 1\}\\ \sigma (a) &amp; = \frac{1} {1 + \exp (a)} \end{align}<br>$$</p>
+<p>\(\mu_{i}\) and \(s\) control the function’s location and scale (slope).</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_4.png" ,="" width="256"></p>
+<h2 id="Summary">Summary</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/lbasis.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Lectures</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis Function</a><br>[4] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript]]>
+    </summary>
+    
+      <category term="basis function" scheme="http://tongsucn.com/tags/basis-function/"/>
+    
+      <category term="fourier basis function" scheme="http://tongsucn.com/tags/fourier-basis-function/"/>
+    
+      <category term="gaussian basis function" scheme="http://tongsucn.com/tags/gaussian-basis-function/"/>
+    
+      <category term="machine learning" scheme="http://tongsucn.com/tags/machine-learning/"/>
+    
+      <category term="polynomial basis function" scheme="http://tongsucn.com/tags/polynomial-basis-function/"/>
+    
+      <category term="sigmoid basis function" scheme="http://tongsucn.com/tags/sigmoid-basis-function/"/>
+    
+      <category term="blog" scheme="http://tongsucn.com/categories/blog/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[[ML Review] Bayesian Curve Regression]]></title>
     <link href="http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/"/>
     <id>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</id>
     <published>2015-11-24T09:44:20.000Z</published>
-    <updated>2015-11-24T14:24:09.000Z</updated>
+    <updated>2015-11-24T14:34:41.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -107,7 +162,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/"/>
     <id>http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/</id>
     <published>2015-11-24T09:22:20.000Z</published>
-    <updated>2015-11-24T09:38:35.000Z</updated>
+    <updated>2015-11-24T14:11:41.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -185,7 +240,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/"/>
     <id>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</id>
     <published>2015-11-11T10:18:52.000Z</published>
-    <updated>2015-11-24T09:39:25.000Z</updated>
+    <updated>2015-11-28T13:03:15.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -273,7 +328,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>Among different types of cross-validation, the most intuitive one is the “leave-one-out” cross-validation. At first, it equally divides the data sets into \( n \) subsets. Select one of these subsets as the test set, and the remaining subsets are the training sets. Doing the training/testing for n times (with different testing sets), then a relative more suitable \( \lambda \) value is obtained.</p>
 <p>“Leave-one-out” cross-validation is a kind of <a href="https://goo.gl/wDEXjt" target="_blank" rel="external">exhaustive cross-validation</a>. There are still some non-exhaustive cross-validation like “k-fold” cross-validation.</p>
 <h2 id="Summary">Summary</h2><p>Comparing with LSR, Ridge Regression with suitable penalizing on weighting vector \( \text{w} \)’s size can dramatically reduce the effect from overfitting. Such technique is called regularization. Hope they can help you :D</p>
-<p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="http://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/9-1.pdf" target="_blank" rel="external">Ridge Regression</a><br>[4] <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a><br>[5] <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a><br>[6] <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a><br>[7] <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a><br>[7] <a href="https://goo.gl/BKKNg5" target="_blank" rel="external">Cross-validation</a></p>
+<p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Training &amp; Testing Data</a><br>[3] <a href="http://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/9-1.pdf" target="_blank" rel="external">Ridge Regression</a><br>[4] <a href="https://goo.gl/aR8UKA" target="_blank" rel="external">Regularization</a><br>[5] <a href="https://goo.gl/nKVaae" target="_blank" rel="external">L1-norm</a><br>[6] <a href="https://goo.gl/paVPK2" target="_blank" rel="external">L2-norm</a><br>[7] <a href="http://statweb.stanford.edu/~tibs/lasso.html" target="_blank" rel="external">Lasso Regression</a><br>[8] <a href="https://goo.gl/BKKNg5" target="_blank" rel="external">Cross-validation</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<script type="text/x-mathjax-config">

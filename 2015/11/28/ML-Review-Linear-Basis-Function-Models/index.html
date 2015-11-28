@@ -39,7 +39,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="TTimeline" />
+  <meta name="keywords" content="basis function,fourier basis function,gaussian basis function,machine learning,polynomial basis function,sigmoid basis function," />
 
 
 
@@ -57,24 +57,31 @@
 
 
 
-<meta name="description" content="Hello world!
-This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.
-It will be greatly honoured if my words here could help you.
-Tong">
+<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the previous posts, We have met two linear basis functions: polynomial basis function and Fourier basis function. In th">
 <meta property="og:type" content="article">
-<meta property="og:title" content="First Post">
-<meta property="og:url" content="http://tongsucn.com/2015/03/06/First-Post/index.html">
+<meta property="og:title" content="[ML Review] Linear Basis Function Models">
+<meta property="og:url" content="http://tongsucn.com/2015/11/28/ML-Review-Linear-Basis-Function-Models/index.html">
 <meta property="og:site_name" content="TTimeline">
-<meta property="og:description" content="Hello world!
-This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.
-It will be greatly honoured if my words here could help you.
-Tong">
+<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the previous posts, We have met two linear basis functions: polynomial basis function and Fourier basis function. In th">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_1.png">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_2.png">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_3.png">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_4.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="First Post">
-<meta name="twitter:description" content="Hello world!
-This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.
-It will be greatly honoured if my words here could help you.
-Tong">
+<meta name="twitter:title" content="[ML Review] Linear Basis Function Models">
+<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the previous posts, We have met two linear basis functions: polynomial basis function and Fourier basis function. In th">
 
 
 
@@ -86,7 +93,7 @@ Tong">
   };
 </script>
 
-  <title> First Post | TTimeline </title>
+  <title> [ML Review] Linear Basis Function Models | TTimeline </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="default">
@@ -242,7 +249,7 @@ Tong">
             
             
               
-                First Post
+                [ML Review] Linear Basis Function Models
               
             
           </h1>
@@ -251,8 +258,8 @@ Tong">
         <div class="post-meta">
           <span class="post-time">
             Posted on
-            <time itemprop="dateCreated" datetime="2015-03-06T09:30:20+01:00" content="2015-03-06">
-              2015-03-06
+            <time itemprop="dateCreated" datetime="2015-11-28T11:18:52+01:00" content="2015-11-28">
+              2015-11-28
             </time>
           </span>
 
@@ -277,8 +284,8 @@ Tong">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/03/06/First-Post/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/06/First-Post/" itemprop="commentsCount"></span>
+                <a href="/2015/11/28/ML-Review-Linear-Basis-Function-Models/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/28/ML-Review-Linear-Basis-Function-Models/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -297,32 +304,65 @@ Tong">
       
 
       
-        <span itemprop="articleBody"><p>Hello world!</p>
-<p>This is my new blog. I will begin to record my life and study here. My interest are Computer Vision and Machine Learning.</p>
-<p>It will be greatly honoured if my words here could help you.</p>
-<p>Tong Su</p>
-<p>MathJax Test:</p>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+        <span itemprop="articleBody"><script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 
-<p>$$E=mc^2$$</p>
+<h2 id="Introduction">Introduction</h2><p>In the previous posts, We have met two linear basis functions: polynomial basis function and Fourier basis function. In this one, I will review and summary them and try making some comparison. The following basis functions are implemented in <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/lbasis.py" target="_blank" rel="external">python code</a>.</p>
+<h2 id="Polynomial_Basis_Function">Polynomial Basis Function</h2><p>$$<br>\phi_{poly} (x) = (\phi_{0} (x), …, \phi_{M - 1} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\phi_{i} (x) = x^{i}, i \in \{0, …, M - 1\}<br>$$</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_1.png" ,="" width="256"></p>
+<h2 id="Gaussian_Basis_Function">Gaussian Basis Function</h2><p>$$<br>\phi_{gaussian} (x) = (\phi_{0} (x), …, \phi_{M - 1} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\phi_{i} (x) = \exp \left\{ - \frac{(x - \mu_{i})^{2}} {2 s^{2}} \right\}, i \in \{0, …, M - 1\}<br>$$</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_2.png" ,="" width="256"></p>
+<h2 id="Fourier_Basis_Function">Fourier Basis Function</h2><p>$$<br>\phi_{fourier} (x) = (\phi_{0} (x), …, \phi_{2M} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\begin{align} \phi_{0} (x) &amp; = 1 \\ \phi_{2n - 1} (x) &amp; = \frac{\cos{(2 \pi nx)}} {n} \\ \phi_{2n} (x) &amp; = \frac{\sin{(2 \pi nx)}} {n},  n \in \{1, …, M\} \end{align}<br>$$</p>
+<p>\(\mu_{i}\) and \(s\) control the function’s location and scale (width).</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_3.png" ,="" width="256"></p>
+<h2 id="Sigmoid_Basis_Function">Sigmoid Basis Function</h2><p>$$<br>\phi_{sigmoid} (x) = (\phi_{0} (x), …, \phi_{M - 1} (x))^T<br>$$</p>
+<p>where</p>
+<p>$$<br>\begin{align} \phi_{i} (x) &amp; = \sigma \left( \frac{x - \mu_{i}} {s} \right), i \in \{0, …, M - 1\}\\ \sigma (a) &amp; = \frac{1} {1 + \exp (a)} \end{align}<br>$$</p>
+<p>\(\mu_{i}\) and \(s\) control the function’s location and scale (slope).</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LBFM_4.png" ,="" width="256"></p>
+<h2 id="Summary">Summary</h2><p>[1] <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/lbasis.py" target="_blank" rel="external">Python code</a><br>[2] <a href="http://www.vision.rwth-aachen.de/teaching/advanced-machine-learning/winter-15-16/advanced-machine-learning" target="_blank" rel="external">Lectures</a><br>[3] <a href="https://en.wikipedia.org/wiki/Basis_function" target="_blank" rel="external">Basis Function</a><br>[4] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/basis-function/" rel="tag">#basis function</a>
+          
+            <a href="/tags/fourier-basis-function/" rel="tag">#fourier basis function</a>
+          
+            <a href="/tags/gaussian-basis-function/" rel="tag">#gaussian basis function</a>
+          
+            <a href="/tags/machine-learning/" rel="tag">#machine learning</a>
+          
+            <a href="/tags/polynomial-basis-function/" rel="tag">#polynomial basis function</a>
+          
+            <a href="/tags/sigmoid-basis-function/" rel="tag">#sigmoid basis function</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/11/24/ML-Review-Bayesian-Curve-Fitting/" rel="next" title="[ML Review] Bayesian Curve Regression">
+                <i class="fa fa-chevron-left"></i> [ML Review] Bayesian Curve Regression
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/05/ML-Review-Least-Squares-Regression/" rel="prev" title="[ML Review] Least Squares Regression">
-                [ML Review] Least Squares Regression <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -349,8 +389,8 @@ Tong">
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/03/06/First-Post/"
-           data-title="First Post" data-url="http://tongsucn.com/2015/03/06/First-Post/">
+      <div class="ds-thread" data-thread-key="2015/11/28/ML-Review-Linear-Basis-Function-Models/"
+           data-title="[ML Review] Linear Basis Function Models" data-url="http://tongsucn.com/2015/11/28/ML-Review-Linear-Basis-Function-Models/">
       </div>
     
   </div>
@@ -495,7 +535,7 @@ Tong">
               
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polynomial_Basis_Function"><span class="nav-number">2.</span> <span class="nav-text">Polynomial Basis Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gaussian_Basis_Function"><span class="nav-number">3.</span> <span class="nav-text">Gaussian Basis Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fourier_Basis_Function"><span class="nav-number">4.</span> <span class="nav-text">Fourier Basis Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sigmoid_Basis_Function"><span class="nav-number">5.</span> <span class="nav-text">Sigmoid Basis Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">6.</span> <span class="nav-text">Summary</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
