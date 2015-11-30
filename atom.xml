@@ -74,7 +74,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/"/>
     <id>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</id>
     <published>2015-11-24T09:44:20.000Z</published>
-    <updated>2015-11-24T14:34:41.000Z</updated>
+    <updated>2015-11-30T20:20:13.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -106,7 +106,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </ol>
 <h3 id="Predictive_Distribution">Predictive Distribution</h3><p>So far, the training phase is finished. But wait, the weighting vector is now actually a distribution, how can we predict an input point with a distribution? According to Mr. Bishop’s book <em>Pattern Recognition and Machine Learning</em> (PRML), the answer is calculating the integral (continuous) / summation (discrete) over \( \text{w} \)’s distribution!</p>
 <p>$$<br>p(t | x, \text{X}, \text{t}) = \int { p(t | x, \text{w}) p(\text{w} | \text{X}, \text{t}, \beta, \alpha) \text{dw} }<br>$$</p>
-<p>\( p(t | x, \text{w}) = \mathcal{N} (t | y(\text{x}, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
+<p>\( p(t | x, \text{w}) = \mathcal{N} (t | y(x, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
 <p>$$<br>p(t | x, \text{X}, \text{t}) = \mathcal{N} (t | m(x), s^2(x))<br>$$</p>
 <p>where mean and variance are</p>
 <p>$$<br>m(x) = \beta \phi(x)^T \text{S} \phi(X) \text{t} \\<br>s(x)^2 = \beta^{-1} + \phi(x) \text{S} \phi(x)<br>$$</p>
