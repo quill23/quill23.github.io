@@ -71,6 +71,7 @@ IntroductionIn the Bayesian curve fitting, I mentioned that the Gaussian noise a
 
 
 IntroductionIn the Bayesian curve fitting, I mentioned that the Gaussian noise assumption (likelihood) and prior Gaussian distribution">
+<meta property="og:image" content="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]PDCP_1.png">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Beta_distribution_pdf.svg/531px-Beta_distribution_pdf.svg.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[ML Review] Probability Distributions and Conjugate Prior">
@@ -314,19 +315,19 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>If there exists a suitable form of <strong>likelihood</strong>, which make the <strong>posterior</strong> have the same form like <strong>prior</strong>, then the <strong>prior</strong> and <strong>likelihood</strong> are conjugate. That is, conjugate is about the <strong>PRIOR</strong> and the <strong>LIKELIHOOD</strong>.</p>
 <p>Previously we used the Gaussian noise assumption (likelihood) and a prior Gaussian distribution. So what about the situations with different noise distributions? In this post I will review them and conclude their conjugate prior.</p>
 <h2 id="Probability_Distributions">Probability Distributions</h2><p>There are three kinds of distributions will be introduced in the following sections. They are the binary distribution (Bernoulli distribution, Binomial distribution and Beta distribution), multinomial distribution (Dirichlet distribution) and continuous distribution (Gaussian distribution, Gamma distribution and Student’s t distribution).</p>
-<h3 id="Bernoulli,_Binomial_and_Beta_Distribution">Bernoulli, Binomial and Beta Distribution</h3><p>One of the most simplest probability distribution is the Bernoulli distribution, which could be expressed by flipping a coin. The random variable \( x \in \{ 0, 1 \} \), where \( x = 1 \) means head and \( x = 0 \) means tail. The question now is “what is the probability of flipping this coin and getting head as result?” We can denote it by \( \mu \):</p>
+<h3 id="Bernoulli,_Binomial_and_Beta_Distribution">Bernoulli, Binomial and Beta Distribution</h3><p>One of the most simplest probability distribution is the <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" target="_blank" rel="external">Bernoulli distribution</a>, which could be expressed by flipping a coin. The random variable \( x \in \{ 0, 1 \} \), where \( x = 1 \) means head and \( x = 0 \) means tail. The question now is “what is the probability of flipping this coin and getting head as result?” We can denote it by \( \mu \):</p>
 <p>$$<br>p(x = 1 | \mu) = \mu<br>$$</p>
 <p>Therefore the Bernoulli distribution over \(x\) is written as:</p>
 <p>$$<br>\begin{align}<br>\text{Bern}(x | \mu) &amp; = \mu^{x}(1 - \mu)^{1 - x} \\<br>\mathbb{E}[x] &amp; = \mu \\<br>\text{var}[x] &amp; = \mu (1 - \mu)<br>\end{align}<br>$$</p>
-<p>Bernoulli distribution describes the single coin situation. The Binomial distribution goes further. It describes the probability distribution of \(N\) coins flipping. The question becomes “the probability of flipping a coin for \(N\) times and \(m\) times of which are head-up in the end”:</p>
+<p>Bernoulli distribution describes the single coin situation. The <a href="https://en.wikipedia.org/wiki/Binomial_distribution" target="_blank" rel="external">Binomial distribution</a> goes further. It describes the probability distribution of \(N\) coins flipping. The question becomes “the probability of flipping a coin for \(N\) times and \(m\) times of which are head-up in the end”:</p>
 <p>$$<br>\begin{align}<br>\text{Bin}(m | N, \mu) &amp; = \left( \begin{array}{c} N \\ m \end{array} \right) \mu^{m} (1 - \mu)^{N - m} \\<br>\mathbb{E}[m] &amp; \equiv \sum_{m = 0}^{N} {m\text{Bin}(m | N, \mu) = N \mu} \\<br>\text{var}[m] &amp; \equiv \sum_{m = 0}^{N} {(m - \mathbb{E}[m])^2 \text{Bin} (m | N, \mu)} = N \mu (1 - \mu)<br>\end{align}<br>$$</p>
 <p>It is obvious that Bernoulli distribution is a special case of the Binomial distribution (\(N = 1\)). If we draw a histogram for Binomial distribution \(\text{Bin}(m | 10, 0.25)\), it looks like:</p>
-<p>img src=”<a href="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPDCP_1.png" target="_blank" rel="external">http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPDCP_1.png</a>“ width=”256”&gt;</p>
+<p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]PDCP_1.png" width="256"></p>
 <p>Now, given a set of observation \( \mathcal{D} = \{ x_1, …, x_M \} \), where each \( x_i, i \in \{1, …, M\} \), is the flipping result (\(0\) for tail-up, \(1\) for head-up). To predict new input and avoid overfitting, we could employ Bayesian estimation (rather than maximum likelihood). The likelihood is:</p>
 <p>$$<br>p(\mathcal{D} | \mu) \propto \prod_{m = 1}^{M} {\mu^{x_m} (1 - \mu)^{1 - x_m}}<br>$$</p>
 <p>For the reasons mentioned above, we need to find out a prior distribution which has the same function form (conjugate prior) like this:</p>
 <p>$$<br>p(\mu | a, b) \propto \mu^{a} (1 - \mu)^{b}<br>$$</p>
-<p>This can be related to the Beta Distribution:</p>
+<p>This can be related to the <a href="https://en.wikipedia.org/wiki/Beta_distribution" target="_blank" rel="external">Beta Distribution</a>:</p>
 <p>$$<br>\begin{align}<br>\text{Beta}(\mu | a, b) &amp; = \frac{\Gamma (a + b)} {\Gamma (a) \Gamma (b)} \mu^{a - 1} (1 - \mu)^{b - 1} \\<br>\Gamma (x) &amp; \equiv \int_{0}^{\infty} {u^{x - 1} e^{-u}} \text{d}u \\<br>\mathbb{E}[\mu] &amp; = \frac{a} {a + b} \\<br>\text{var}[\mu] &amp; = \frac{ab} {(a + b)^{2} (a + b + a)}<br>\end{align}<br>$$</p>
 <p>\(\Gamma (x)\) is the <a href="https://en.wikipedia.org/wiki/Gamma_function" target="_blank" rel="external">gamma function</a>, it can also be written as factorial function \( \Gamma (n + 1) = n! = n \Gamma (n) \) when the input is a positive integer. \(a\) and \(b\) are often called hyperparameters. The Beta distribution looks like this:</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Beta_distribution_pdf.svg/531px-Beta_distribution_pdf.svg.png" width="256"></p>
@@ -337,12 +338,40 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>“What is the probability that the next coin toss will land heads up?” is the question of prediction:</p>
 <p>$$<br>\begin{align}<br>p(x = 1 | a_0, b_0, \mathcal{D}) &amp; = \int_{0}^{1} {p(x = 1 | \mu) p(\mu | a_0, b_0, \mathcal{D})} \text{d} \mu \\<br>&amp; = \int_{0}^{1} {\mu p(\mu | a_0, b_0, \mathcal{D})} \text{d} \mu \\<br>&amp; = \mathbb{E}[\mu | a_0, b_0, \mathcal{D}] = \frac{a_N}{a_N + b_N}<br>\end{align}<br>$$</p>
 <p>Therefore it’s equivalent to the total fraction of observations that correspond to \(x = 1\).</p>
-<h3 id="Multinomial_and_Dirichlet_Distribution">Multinomial and Dirichlet Distribution</h3><p>Let’s now consider a more complex situation, tossing a dice instead of flipping a coin. Things get complicated because there are potential six results now, they are 1, 2, 3, 4, 5, 6. For convenient we use 1-of-\(K\) coding scheme, here the \(K\) is 6: \( \text{x} = (0, 0, 1, 0, 0, 0)^T \). After generalization, the distribution of \(\text{x}\) with \(K\) outcomes is:</p>
-<p>$$<br>p(\text{x} | \mu) = \prod_{k = 1}^{K} {\mu_k^{x_k}}, where \forall k : \mu_k \geq 0 \wedge \sum_{k = 1}^{K} {\mu_k = 1}<br>$$</p>
-<p>So the multinomial distribution is also the generalization of the Bernoulli distribution. \(\mu_k\) is the probability of result \(k\). Given a data set \(\mathcal{D} = \{\text{x}_1, …, \text{x}_M\}\), the likelihood:</p>
-<p>$$<br>p(\mathcal{D} | \mu) = \prod_{n = 1}^M {\prod_{k = 1}^K {\mu^{x_{nk}}}} = \prod_{k = 1}^K {\mu_k^{(\sum_n {x_{nk}})}}<br>$$</p>
-<h3 id="Gaussian_Distribution">Gaussian Distribution</h3><h3 id="Gamma_Distribution">Gamma Distribution</h3><h3 id="Student’s_t_Distribution">Student’s t Distribution</h3><h3 id="More:_Exponential_Family">More: Exponential Family</h3><h2 id="Summary">Summary</h2><p>Prior distributions and their conjugate prior.<br>|Likelihood Function|Conjugate Prior|<br>|:—:|:—:|<br>|Bernoulli|Beta distribution|</p>
-<h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a></p>
+<h3 id="Multinomial_and_Dirichlet_Distribution">Multinomial and Dirichlet Distribution</h3><p>Let’s now consider a more complex situation, tossing a dice instead of flipping a coin. Things get complicated because there are potential six results now, they are 1, 2, 3, 4, 5, 6. For convenient we use 1-of-\(K\) coding scheme, here the \(K\) is 6, e.g. \( \text{x} = (0, 0, 1, 0, 0, 0)^T \). The distribution of \(\text{x}\) with \(K\) outcomes is:</p>
+<p>$$<br>p(\text{x} | \mu) = \prod_{k = 1}^{K} {\mu_k^{x_k}}, \ \text{where} \ \forall k : \mu_k \geq 0 \wedge \sum_{k = 1}^{K} {\mu_k = 1}<br>$$</p>
+<p>So this is the generalization of the Bernoulli distribution. \(\mu_k\) is the probability of result \(k\). Given a data set \(\mathcal{D} = \{\text{x}_1, …, \text{x}_M\}\), the likelihood:</p>
+<p>$$<br>p(\mathcal{D} | \mu) = \prod_{n = 1}^M {\prod_{k = 1}^K {\mu^{x_{nk}}}} = \prod_{k = 1}^K {\mu_k^{(\sum_n^M {x_{nk}})}} = \prod_{k = 1}^K {\mu_k^{m_k}}<br>$$</p>
+<p>\(m_k\) is the number of cases for which \(\text{x}_n\) has output \(k\). <a href="https://en.wikipedia.org/wiki/Multinomial_distribution" target="_blank" rel="external">Multinomial distribution</a> is the joint distribution over \(m_1, m_K\) conditioned on \(\mu\) and \(M\):</p>
+<p>$$<br>\begin{align}<br>\text{Mult} (m_1, …, m_K | \mu, M) &amp; = \left( \begin{array}{c} M \\ m_1 … m_K \end{array} \right) \prod_{k = 1}^K {\mu_k^{m_k}} = \frac{M!}{m_1! … m_K!} \prod_{k = 1}^K {\mu_k^{m_k}} \\<br>\mathbb{E}[m_k] &amp; = N \mu_k \\<br>\text{var}[m_k] &amp; = N \mu_k (1 - \mu_k) \\<br>\text{cov}[m_j m_k] &amp; = -N \mu_j \mu_k<br>\end{align}<br>$$</p>
+<p>Therefore if we need to find a conjugate prior with the same form, the <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution" target="_blank" rel="external">Dirichlet distribution</a> is a good choice. It is the multivariate generalization of the Beta distribution:</p>
+<p>$$<br>\begin{align}<br>\text{Dir} (\mu | \alpha) &amp; = \frac{\Gamma(\alpha_0)} {\Gamma(\alpha_1) … \Gamma(\alpha_K)} \prod_{k = 1}^K {\mu_k^{\alpha_k - 1}}, \ \text{where} \ \alpha_0 = \sum_{k = 1}^K {\alpha_k} \\<br>\mathbb{E}[\mu_k] &amp; = \frac{\alpha_k} {\alpha_0} \\<br>\text{var}[\mu_k] &amp; = \frac{\alpha_k (\alpha_0 - \alpha_k)} {\alpha_0^2 (\alpha_0 + 1)} \\<br>\text{cov}[\mu_j \mu_k] &amp; = - \frac{\alpha_j \alpha_k} {\alpha_0^2 (\alpha_0 + 1)}<br>\end{align}<br>$$</p>
+<p>Therefore the posterior distribution over the parameters \(\mu\):</p>
+<p>$$<br>p(\mu | \mathcal{D}, \alpha) \propto p(\mathcal{D} | \mu) p(\mathcal{\mu | \alpha}) \propto \prod_{k = 1}^K {\mu_k^{\alpha_k + m_k - 1}}<br>$$</p>
+<p>Therefore, \(\alpha_k\) could be interpreted as an effective number of observations of \(x_k = 1\).</p>
+<h3 id="Gaussian_Distribution">Gaussian Distribution</h3><h3 id="Gamma_Distribution">Gamma Distribution</h3><h3 id="Student’s_t_Distribution">Student’s t Distribution</h3><h3 id="More:_Exponential_Family">More: Exponential Family</h3><h2 id="Summary">Summary</h2><p>Prior distributions and their conjugate prior.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Likelihood Function</th>
+<th style="text-align:center">Conjugate Prior</th>
+<th style="text-align:center">Posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Bernoulli: \( \mu^{x}(1 - \mu)^{1 - x} \)</td>
+<td style="text-align:center">Beta distribution: \( \frac{\Gamma (a + b)} {\Gamma (a) \Gamma (b)} \mu^{a - 1} (1 - \mu)^{b - 1} \)</td>
+<td style="text-align:center">\( \frac{a_N}{a_N + b_N} \)</td>
+</tr>
+<tr>
+<td style="text-align:center">Multinomial:\( \left( \begin{array}{c} M \\ m_1 … m_K \end{array} \right) \prod_{k = 1}^K {\mu_k^{m_k}} \)</td>
+<td style="text-align:center">Dirichlet Distribution: \( \frac{\Gamma(\alpha_0)} {\Gamma(\alpha_1) … \Gamma(\alpha_K)} \prod_{k = 1}^K {\mu_k^{\alpha_k - 1}} \)</td>
+<td style="text-align:center">\( \prod_{k = 1}^K {\mu_k^{\alpha_k + m_k - 1}} \)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a><br>[4] <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" target="_blank" rel="external">Bernoulli Distribution</a><br>[5] <a href="https://en.wikipedia.org/wiki/Binomial_distribution" target="_blank" rel="external">Binomial Distribution</a><br>[6] <a href="https://en.wikipedia.org/wiki/Beta_distribution" target="_blank" rel="external">Beta Distribution</a><br>[7] <a href="https://en.wikipedia.org/wiki/Multinomial_distribution" target="_blank" rel="external">Multinomial Distribution</a><br>[8] <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution" target="_blank" rel="external">Dirichlet Distribution</a></p>
 </span>
       
     </div>
