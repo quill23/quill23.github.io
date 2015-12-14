@@ -345,7 +345,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>$$<br>m(x) = \beta \phi(x)^T \text{S} \phi(X) \text{t} \\<br>s(x)^2 = \beta^{-1} + \phi(x) \text{S} \phi(x)<br>$$</p>
 <p>and \( \text{S} \) is the regularized covariance matrix:</p>
 <p>$$<br>\text{S} = S_N = (\beta \phi(X) \phi(X)^T + S_{0}^{-1} \text{I})^{-1}<br>$$</p>
-<p>To be noticed is that both of the mean and the variance depend on the input point. It means that the input points could also affect the distribution. Let me show you an example. The <a href="">data</a> I have prepared is not quite good, so I highly recommend you read the example on PRML.</p>
+<p>To be noticed is that both of the mean and the variance depend on the input point. It means that the input points could also affect the distribution. Let me show you an example. The <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/poly_data_gaussian_noise.txt" target="_blank" rel="external">data</a> I have prepared is not quite good, so I highly recommend you read the example on PRML.</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]BCR_1.png" ,="" width="256"></p>
 <p>This example illustrates a simulated procedure of training (but our training is not implemented like this). The blue curve is our optimized result. The two black thiner curves show the variance \(s(x)\) of every points on the blue curve. They have been rescaled suitably to make them visible, so for example it <strong>DOES NOT</strong> mean that the point at \(x = 0\) has variance about \(1.25\).</p>
 <p>It is obvious that in the first figure the variances at the points are quite low, and other places are relative higher. With more points inserted, the variances become “well-distributed”. (Remember I have adjust the scale to make the black curves visible, so the variances of the first two points in the rest two figures look higher than in the first figure).</p>
@@ -475,7 +475,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -489,7 +489,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>

@@ -1,0 +1,834 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="UA-60473900-1" />
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Bernoulli distribution,Beta distribution,Binomial distribution,Dirichlet distribution,Gamma distribution,Gaussian distribution,Student's t distribution,binary distribution,conjugate distribution,conjugate prior,continuous distribution,likelihood,machine learning,multinomial distribution,posterior,prior,probability distribution," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="TTimeline" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the Bayesian curve fitting, I mentioned that the Gaussian noise assumption (likelihood) and prior Gaussian distribution">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[ML Review] Probability Distributions and Conjugate Prior">
+<meta property="og:url" content="http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/index.html">
+<meta property="og:site_name" content="TTimeline">
+<meta property="og:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the Bayesian curve fitting, I mentioned that the Gaussian noise assumption (likelihood) and prior Gaussian distribution">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Beta_distribution_pdf.svg/531px-Beta_distribution_pdf.svg.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[ML Review] Probability Distributions and Conjugate Prior">
+<meta name="twitter:description" content="MathJax.Hub.Config({tex2jax: {inlineMath: [[&apos;\\(&apos;, &apos;\\)&apos;]]}});
+
+
+
+IntroductionIn the Bayesian curve fitting, I mentioned that the Gaussian noise assumption (likelihood) and prior Gaussian distribution">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title> [ML Review] Probability Distributions and Conjugate Prior | TTimeline </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">TTimeline</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">星辰大海</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="#" class="st-search-show-outputs">
+            
+              <i class="menu-item-icon fa fa-search icon-next-search"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'jy3PX1o1iuNHjezMPEs4','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [ML Review] Probability Distributions and Conjugate Prior
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-12-07T11:50:20+01:00" content="2015-12-07">
+              2015-12-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index">
+                    <span itemprop="name">tech</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><script type="text/x-mathjax-config">
+MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
+</script>
+<script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<h2 id="Introduction">Introduction</h2><p>In the <a href="/2015/11/24/ML-Review-Regression-from-Probability-Perspective/">Bayesian curve fitting</a>, I mentioned that the Gaussian noise assumption (likelihood) and prior Gaussian distribution over weighting vector will result in a Gaussian posterior. The likelihood and prior are conjugate, the prior is also called the conjugate prior.</p>
+<h2 id="About_Conjugate_Prior">About Conjugate Prior</h2><p>In general, we will meet the following probabilities: \( p(\theta) : prior, p(\theta | X) : posterior, p(X), p(X | \theta) : likelihood \). According to the Bayes’ Theorem, they could be written as:</p>
+<p>$$<br>posterior = \frac{likelihood \times prior} {p(X)}<br>$$</p>
+<p>To make the posterior calculation intuitive, we often need that the posterior and the prior have the same “form” (just like in Bayesian curve fitting both of them are Gaussian). Furthermore, the posterior could also be used as the prior of future calculation, which will result in a “calculating chain”:</p>
+<p>$$<br>\begin{align}<br>posterior_1 &amp; = \frac{likelihood \times prior} {p(X)} \\<br>posterior_2 &amp; = \frac{likelihood^{‘} \times posterior_1} {p(X^{‘})} \\<br>&amp; …<br>\end{align}<br>$$</p>
+<p>If there exists a suitable form of <strong>likelihood</strong>, which make the <strong>posterior</strong> have the same form like <strong>prior</strong>, then the <strong>prior</strong> and <strong>likelihood</strong> are conjugate. That is, conjugate is about the <strong>PRIOR</strong> and the <strong>LIKELIHOOD</strong>.</p>
+<p>Previously we used the Gaussian noise assumption (likelihood) and a prior Gaussian distribution. So what about the situations with different noise distributions? In this post I will review them and conclude their conjugate prior.</p>
+<h2 id="Probability_Distributions">Probability Distributions</h2><p>There are three kinds of distributions will be introduced in the following sections. They are the binary distribution (Bernoulli distribution, Binomial distribution and Beta distribution), multinomial distribution (Dirichlet distribution) and continuous distribution (Gaussian distribution, Gamma distribution and Student’s t distribution).</p>
+<h3 id="Bernoulli,_Binomial_and_Beta_Distribution">Bernoulli, Binomial and Beta Distribution</h3><p>One of the most simplest probability distribution is the Bernoulli distribution, which could be expressed by flipping a coin. The random variable \( x \in \{ 0, 1 \} \), where \( x = 1 \) means head and \( x = 0 \) means tail. The question now is “what is the probability of flipping this coin and getting head as result?” We can denote it by \( \mu \):</p>
+<p>$$<br>p(x = 1 | \mu) = \mu<br>$$</p>
+<p>Therefore the Bernoulli distribution over \(x\) is written as:</p>
+<p>$$<br>\begin{align}<br>\text{Bern}(x | \mu) &amp; = \mu^{x}(1 - \mu)^{1 - x} \\<br>\mathbb{E}[x] &amp; = \mu \\<br>\text{var}[x] &amp; = \mu (1 - \mu)<br>\end{align}<br>$$</p>
+<p>Bernoulli distribution describes the single coin situation. The Binomial distribution goes further. It describes the probability distribution of \(N\) coins flipping. The question becomes “the probability of flipping a coin for \(N\) times and \(m\) times of which are head-up in the end”:</p>
+<p>$$<br>\begin{align}<br>\text{Bin}(m | N, \mu) &amp; = \left( \begin{array}{c} N \\ m \end{array} \right) \mu^{m} (1 - \mu)^{N - m} \\<br>\mathbb{E}[m] &amp; \equiv \sum_{m = 0}^{N} {m\text{Bin}(m | N, \mu) = N \mu} \\<br>\text{var}[m] &amp; \equiv \sum_{m = 0}^{N} {(m - \mathbb{E}[m])^2 \text{Bin} (m | N, \mu)} = N \mu (1 - \mu)<br>\end{align}<br>$$</p>
+<p>It is obvious that Bernoulli distribution is a special case of the Binomial distribution (\(N = 1\)). If we draw a histogram for Binomial distribution \(\text{Bin}(m | 10, 0.25)\), it looks like:</p>
+<p>img src=”<a href="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPDCP_1.png" target="_blank" rel="external">http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]RPDCP_1.png</a>“ width=”256”&gt;</p>
+<p>Now, given a set of observation \( \mathcal{D} = \{ x_1, …, x_M \} \), where each \( x_i, i \in \{1, …, M\} \), is the flipping result (\(0\) for tail-up, \(1\) for head-up). To predict new input and avoid overfitting, we could employ Bayesian estimation (rather than maximum likelihood). The likelihood is:</p>
+<p>$$<br>p(\mathcal{D} | \mu) \propto \prod_{m = 1}^{M} {\mu^{x_m} (1 - \mu)^{1 - x_m}}<br>$$</p>
+<p>For the reasons mentioned above, we need to find out a prior distribution which has the same function form (conjugate prior) like this:</p>
+<p>$$<br>p(\mu | a, b) \propto \mu^{a} (1 - \mu)^{b}<br>$$</p>
+<p>This can be related to the Beta Distribution:</p>
+<p>$$<br>\begin{align}<br>\text{Beta}(\mu | a, b) &amp; = \frac{\Gamma (a + b)} {\Gamma (a) \Gamma (b)} \mu^{a - 1} (1 - \mu)^{b - 1} \\<br>\Gamma (x) &amp; \equiv \int_{0}^{\infty} {u^{x - 1} e^{-u}} \text{d}u \\<br>\mathbb{E}[\mu] &amp; = \frac{a} {a + b} \\<br>\text{var}[\mu] &amp; = \frac{ab} {(a + b)^{2} (a + b + a)}<br>\end{align}<br>$$</p>
+<p>\(\Gamma (x)\) is the <a href="https://en.wikipedia.org/wiki/Gamma_function" target="_blank" rel="external">gamma function</a>, it can also be written as factorial function \( \Gamma (n + 1) = n! = n \Gamma (n) \) when the input is a positive integer. \(a\) and \(b\) are often called hyperparameters. The Beta distribution looks like this:</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Beta_distribution_pdf.svg/531px-Beta_distribution_pdf.svg.png" width="256"></p>
+<p>Now let’s apply it with Bayesian approach. \( \mathcal{D} = \{x_1, …, x_M\} \):</p>
+<p>$$<br>\begin{align}<br>p(\mu | a_0, b_0, \mathcal{D}) &amp; \propto p(\mathcal{D} | \mu) p(\mu | a_0, b_0) \\<br>&amp; = \left( \prod_{n - 1}^{M} {\mu^{x_n} (1 - \mu)^{1 - x_n}} \right) \text{Beta} (\mu | a_0, b_0) \\<br>&amp; \propto \mu^{m + a_0 - 1} (1 - \mu)^{(M - m) + b_0 - 1} \\<br>&amp; \propto \text{Beta}(\mu | a_M, b_M)<br>\end{align}<br>$$</p>
+<p>where \(m\) means the number of head-up results, and \( a_M = a_0 + m, b_M = b_0 +(M - m) \). And we can easily find that hyperparameters \(a\) and \(b\) are actually the effective number of observations for head-up (\(x = 1\)) and tail-up (\(x = 0\)) respectively. Because the posterior is in form of Beta distribution and has the same form with the prior we have just used, it can also be utilized as a prior when new observed data come. As the size of observed data set increases (\(M\) increases):</p>
+<p>$$<br>\begin{align}<br>a_M &amp; \rightarrow m \\<br>b_M &amp; \rightarrow M - m \\<br>\mathbb{E}[\mu] &amp; \rightarrow \frac{m}{M} = \mu_{ML} \\<br>\text{var}[\mu] &amp; \rightarrow 0<br>\end{align}<br>$$</p>
+<p>“What is the probability that the next coin toss will land heads up?” is the question of prediction:</p>
+<p>$$<br>\begin{align}<br>p(x = 1 | a_0, b_0, \mathcal{D}) &amp; = \int_{0}^{1} {p(x = 1 | \mu) p(\mu | a_0, b_0, \mathcal{D})} \text{d} \mu \\<br>&amp; = \int_{0}^{1} {\mu p(\mu | a_0, b_0, \mathcal{D})} \text{d} \mu \\<br>&amp; = \mathbb{E}[\mu | a_0, b_0, \mathcal{D}] = \frac{a_N}{a_N + b_N}<br>\end{align}<br>$$</p>
+<p>Therefore it’s equivalent to the total fraction of observations that correspond to \(x = 1\).</p>
+<h3 id="Dirichlet_Distribution">Dirichlet Distribution</h3><h3 id="Gaussian_Distribution">Gaussian Distribution</h3><h3 id="Gamma_Distribution">Gamma Distribution</h3><h3 id="Student’s_t_Distribution">Student’s t Distribution</h3><h3 id="More:_Exponential_Family">More: Exponential Family</h3><h2 id="Summary">Summary</h2><h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Bernoulli-distribution/" rel="tag">#Bernoulli distribution</a>
+          
+            <a href="/tags/Beta-distribution/" rel="tag">#Beta distribution</a>
+          
+            <a href="/tags/Binomial-distribution/" rel="tag">#Binomial distribution</a>
+          
+            <a href="/tags/Dirichlet-distribution/" rel="tag">#Dirichlet distribution</a>
+          
+            <a href="/tags/Gamma-distribution/" rel="tag">#Gamma distribution</a>
+          
+            <a href="/tags/Gaussian-distribution/" rel="tag">#Gaussian distribution</a>
+          
+            <a href="/tags/Student-s-t-distribution/" rel="tag">#Student's t distribution</a>
+          
+            <a href="/tags/binary-distribution/" rel="tag">#binary distribution</a>
+          
+            <a href="/tags/conjugate-distribution/" rel="tag">#conjugate distribution</a>
+          
+            <a href="/tags/conjugate-prior/" rel="tag">#conjugate prior</a>
+          
+            <a href="/tags/continuous-distribution/" rel="tag">#continuous distribution</a>
+          
+            <a href="/tags/likelihood/" rel="tag">#likelihood</a>
+          
+            <a href="/tags/machine-learning/" rel="tag">#machine learning</a>
+          
+            <a href="/tags/multinomial-distribution/" rel="tag">#multinomial distribution</a>
+          
+            <a href="/tags/posterior/" rel="tag">#posterior</a>
+          
+            <a href="/tags/prior/" rel="tag">#prior</a>
+          
+            <a href="/tags/probability-distribution/" rel="tag">#probability distribution</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/28/ML-Review-Linear-Basis-Function-Models/" rel="next" title="[ML Review] Linear Basis Function Models">
+                <i class="fa fa-chevron-left"></i> [ML Review] Linear Basis Function Models
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/"
+           data-title="[ML Review] Probability Distributions and Conjugate Prior" data-url="http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="https://avatars3.githubusercontent.com/u/3276150?v=3&s=460" alt="Tong Su" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Tong Su</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">A grain of star stuff</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://de.linkedin.com/pub/tong-su/60/67a/63b" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> LinkedIn
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/tongsucn" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/tong.su.184" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> facebook
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/iquill" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:tongsu.cn@gmail.com" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> mail
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#About_Conjugate_Prior"><span class="nav-number">2.</span> <span class="nav-text">About Conjugate Prior</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Probability_Distributions"><span class="nav-number">3.</span> <span class="nav-text">Probability Distributions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bernoulli,_Binomial_and_Beta_Distribution"><span class="nav-number">3.1.</span> <span class="nav-text">Bernoulli, Binomial and Beta Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dirichlet_Distribution"><span class="nav-number">3.2.</span> <span class="nav-text">Dirichlet Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gaussian_Distribution"><span class="nav-number">3.3.</span> <span class="nav-text">Gaussian Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gamma_Distribution"><span class="nav-number">3.4.</span> <span class="nav-text">Gamma Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Student’s_t_Distribution"><span class="nav-number">3.5.</span> <span class="nav-text">Student’s t Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#More:_Exponential_Family"><span class="nav-number">3.6.</span> <span class="nav-text">More: Exponential Family</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tong Su</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tongsucn"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+
+  
+  
+
+</body>
+</html>
