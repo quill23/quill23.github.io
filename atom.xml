@@ -4,7 +4,7 @@
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://tongsucn.com/"/>
-  <updated>2015-12-14T19:20:03.000Z</updated>
+  <updated>2015-12-14T20:25:29.000Z</updated>
   <id>http://tongsucn.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/"/>
     <id>http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/</id>
     <published>2015-12-07T10:50:20.000Z</published>
-    <updated>2015-12-14T19:20:03.000Z</updated>
+    <updated>2015-12-14T20:25:29.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -56,7 +56,12 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>“What is the probability that the next coin toss will land heads up?” is the question of prediction:</p>
 <p>$$<br>\begin{align}<br>p(x = 1 | a_0, b_0, \mathcal{D}) &amp; = \int_{0}^{1} {p(x = 1 | \mu) p(\mu | a_0, b_0, \mathcal{D})} \text{d} \mu \\<br>&amp; = \int_{0}^{1} {\mu p(\mu | a_0, b_0, \mathcal{D})} \text{d} \mu \\<br>&amp; = \mathbb{E}[\mu | a_0, b_0, \mathcal{D}] = \frac{a_N}{a_N + b_N}<br>\end{align}<br>$$</p>
 <p>Therefore it’s equivalent to the total fraction of observations that correspond to \(x = 1\).</p>
-<h3 id="Dirichlet_Distribution">Dirichlet Distribution</h3><h3 id="Gaussian_Distribution">Gaussian Distribution</h3><h3 id="Gamma_Distribution">Gamma Distribution</h3><h3 id="Student’s_t_Distribution">Student’s t Distribution</h3><h3 id="More:_Exponential_Family">More: Exponential Family</h3><h2 id="Summary">Summary</h2><h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a></p>
+<h3 id="Multinomial_and_Dirichlet_Distribution">Multinomial and Dirichlet Distribution</h3><p>Let’s now consider a more complex situation, tossing a dice instead of flipping a coin. Things get complicated because there are potential six results now, they are 1, 2, 3, 4, 5, 6. For convenient we use 1-of-\(K\) coding scheme, here the \(K\) is 6: \( \text{x} = (0, 0, 1, 0, 0, 0)^T \). After generalization, the distribution of \(\text{x}\) with \(K\) outcomes is:</p>
+<p>$$<br>p(\text{x} | \mu) = \prod_{k = 1}^{K} {\mu_k^{x_k}}, where \forall k : \mu_k \geq 0 \wedge \sum_{k = 1}^{K} {\mu_k = 1}<br>$$</p>
+<p>So the multinomial distribution is also the generalization of the Bernoulli distribution. \(\mu_k\) is the probability of result \(k\). Given a data set \(\mathcal{D} = \{\text{x}_1, …, \text{x}_M\}\), the likelihood:</p>
+<p>$$<br>p(\mathcal{D} | \mu) = \prod_{n = 1}^M {\prod_{k = 1}^K {\mu^{x_{nk}}}} = \prod_{k = 1}^K {\mu_k^{(\sum_n {x_{nk}})}}<br>$$</p>
+<h3 id="Gaussian_Distribution">Gaussian Distribution</h3><h3 id="Gamma_Distribution">Gamma Distribution</h3><h3 id="Student’s_t_Distribution">Student’s t Distribution</h3><h3 id="More:_Exponential_Family">More: Exponential Family</h3><h2 id="Summary">Summary</h2><p>Prior distributions and their conjugate prior.<br>|Likelihood Function|Conjugate Prior|<br>|:—:|:—:|<br>|Bernoulli|Beta distribution|</p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<script type="text/x-mathjax-config">
@@ -163,7 +168,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/"/>
     <id>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</id>
     <published>2015-11-24T09:44:20.000Z</published>
-    <updated>2015-12-14T14:44:21.000Z</updated>
+    <updated>2015-12-14T17:02:54.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -329,7 +334,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/"/>
     <id>http://tongsucn.com/2015/11/11/ML-Review-Ridge-Regression-and-Regularization/</id>
     <published>2015-11-11T10:18:52.000Z</published>
-    <updated>2015-11-28T13:03:15.000Z</updated>
+    <updated>2015-12-08T15:50:11.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
