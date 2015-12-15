@@ -335,11 +335,13 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p> $$ m_N = \hat{\text{w}} $$</p>
 <p> And the covariance matrix:</p>
 <p> $$ S_N = \left( \beta \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} $$</p>
+<p> So the posterior distribution:</p>
+<p> $$ p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N}(\text{w} | m_N, S_N) $$</p>
 </li>
 </ol>
 <h3 id="Predictive_Distribution">Predictive Distribution</h3><p>So far, the training phase is finished. But wait, the weighting vector is now actually a distribution, how can we predict an input point with a distribution? According to Mr. Bishop’s book <em>Pattern Recognition and Machine Learning</em> (PRML), the answer is calculating the integral (continuous) / summation (discrete) over \( \text{w} \)’s distribution!</p>
 <p>$$<br>p(t | x, \text{X}, \text{t}) = \int { p(t | x, \text{w}) p(\text{w} | \text{X}, \text{t}, \beta, \alpha) \text{dw} }<br>$$</p>
-<p>\( p(t | x, \text{w}) = \mathcal{N} (t | y(x, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
+<p>\(p(t | x, \text{w}) = \mathcal{N} (t | y(x, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
 <p>$$<br>p(t | x, \text{X}, \text{t}) = \mathcal{N} (t | m(x), s^2(x))<br>$$</p>
 <p>where mean and variance are</p>
 <p>$$<br>m(x) = \beta \phi(x)^T \text{S} \phi(X) \text{t} \\<br>s(x)^2 = \beta^{-1} + \phi(x) \text{S} \phi(x)<br>$$</p>
@@ -489,7 +491,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>

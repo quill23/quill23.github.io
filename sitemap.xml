@@ -2,13 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/</loc>
-    <lastmod>2015-12-14T22:46:23.000Z</lastmod>
+    <loc>http://tongsucn.com/2015/12/15/ML-Review-Probability-Distributions-and-Conjugate-Prior/</loc>
+    <lastmod>2015-12-15T22:15:06.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</loc>
+    <lastmod>2015-12-15T14:18:55.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</loc>
-    <lastmod>2015-12-14T17:02:54.000Z</lastmod>
+    <lastmod>2015-12-15T09:52:04.000Z</lastmod>
   </url>
   
   <url>
@@ -24,11 +29,6 @@
   <url>
     <loc>http://tongsucn.com/2015/11/24/ML-Review-Regression-from-Probability-Perspective/</loc>
     <lastmod>2015-11-24T14:11:41.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</loc>
-    <lastmod>2015-11-24T09:38:14.000Z</lastmod>
   </url>
   
   <url>

@@ -4,7 +4,7 @@
   <subtitle><![CDATA[星辰大海]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://tongsucn.com/"/>
-  <updated>2015-12-14T22:46:23.000Z</updated>
+  <updated>2015-12-15T22:15:06.000Z</updated>
   <id>http://tongsucn.com/</id>
   
   <author>
@@ -16,10 +16,10 @@
   
   <entry>
     <title><![CDATA[[ML Review] Probability Distributions and Conjugate Prior]]></title>
-    <link href="http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/"/>
-    <id>http://tongsucn.com/2015/12/07/TODO-ML-Review-Probability-Distributions-and-Conjugate-Prior/</id>
-    <published>2015-12-07T10:50:20.000Z</published>
-    <updated>2015-12-14T22:46:23.000Z</updated>
+    <link href="http://tongsucn.com/2015/12/15/ML-Review-Probability-Distributions-and-Conjugate-Prior/"/>
+    <id>http://tongsucn.com/2015/12/15/ML-Review-Probability-Distributions-and-Conjugate-Prior/</id>
+    <published>2015-12-15T10:50:20.000Z</published>
+    <updated>2015-12-15T22:15:06.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -32,7 +32,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>$$<br>\begin{align}<br>posterior_1 &amp; = \frac{likelihood \times prior} {p(X)} \\<br>posterior_2 &amp; = \frac{likelihood^{‘} \times posterior_1} {p(X^{‘})} \\<br>&amp; …<br>\end{align}<br>$$</p>
 <p>If there exists a suitable form of <strong>likelihood</strong>, which make the <strong>posterior</strong> have the same form like <strong>prior</strong>, then the <strong>prior</strong> and <strong>likelihood</strong> are conjugate. That is, conjugate is about the <strong>PRIOR</strong> and the <strong>LIKELIHOOD</strong>.</p>
 <p>Previously we used the Gaussian noise assumption (likelihood) and a prior Gaussian distribution. So what about the situations with different noise distributions? In this post I will review them and conclude their conjugate prior.</p>
-<h2 id="Probability_Distributions">Probability Distributions</h2><p>There are three kinds of distributions will be introduced in the following sections. They are the binary distribution (Bernoulli distribution, Binomial distribution and Beta distribution), multinomial distribution (Dirichlet distribution) and continuous distribution (Gaussian distribution, Gamma distribution and Student’s t distribution).</p>
+<h2 id="Probability_Distributions">Probability Distributions</h2><p>There are three kinds of distributions will be introduced in the following sections. They are the binary distribution (Bernoulli distribution, Binomial distribution and Beta distribution), multinomial distribution (Dirichlet distribution) and continuous distribution (Gaussian distribution and Gamma distribution).</p>
 <h3 id="Bernoulli,_Binomial_and_Beta_Distribution">Bernoulli, Binomial and Beta Distribution</h3><p>One of the most simplest probability distribution is the <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" target="_blank" rel="external">Bernoulli distribution</a>, which could be expressed by flipping a coin. The random variable \( x \in \{ 0, 1 \} \), where \( x = 1 \) means head and \( x = 0 \) means tail. The question now is “what is the probability of flipping this coin and getting head as result?” We can denote it by \( \mu \):</p>
 <p>$$<br>p(x = 1 | \mu) = \mu<br>$$</p>
 <p>Therefore the Bernoulli distribution over \(x\) is written as:</p>
@@ -47,7 +47,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>$$<br>p(\mu | a, b) \propto \mu^{a} (1 - \mu)^{b}<br>$$</p>
 <p>This can be related to the <a href="https://en.wikipedia.org/wiki/Beta_distribution" target="_blank" rel="external">Beta Distribution</a>:</p>
 <p>$$<br>\begin{align}<br>\text{Beta}(\mu | a, b) &amp; = \frac{\Gamma (a + b)} {\Gamma (a) \Gamma (b)} \mu^{a - 1} (1 - \mu)^{b - 1} \\<br>\Gamma (x) &amp; \equiv \int_{0}^{\infty} {u^{x - 1} e^{-u}} \text{d}u \\<br>\mathbb{E}[\mu] &amp; = \frac{a} {a + b} \\<br>\text{var}[\mu] &amp; = \frac{ab} {(a + b)^{2} (a + b + a)}<br>\end{align}<br>$$</p>
-<p>\(\Gamma (x)\) is the <a href="https://en.wikipedia.org/wiki/Gamma_function" target="_blank" rel="external">gamma function</a>, it can also be written as factorial function \( \Gamma (n + 1) = n! = n \Gamma (n) \) when the input is a positive integer. \(a\) and \(b\) are often called hyperparameters. The Beta distribution looks like this:</p>
+<p>\(\Gamma (x)\) is the <a href="https://en.wikipedia.org/wiki/Gamma_function" target="_blank" rel="external">gamma function</a>, it can also be written as factorial function \( \Gamma (n + 1) = n! = n \Gamma (n) \) when the input is a positive integer. \(a\) and \(b\) are often called hyperparameters. The Beta distribution looks like <a href="#Bernoulli distribution">this</a>:</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Beta_distribution_pdf.svg/531px-Beta_distribution_pdf.svg.png" width="256"></p>
 <p>Now let’s apply it with Bayesian approach. \( \mathcal{D} = \{x_1, …, x_M\} \):</p>
 <p>$$<br>\begin{align}<br>p(\mu | a_0, b_0, \mathcal{D}) &amp; \propto p(\mathcal{D} | \mu) p(\mu | a_0, b_0) \\<br>&amp; = \left( \prod_{n - 1}^{M} {\mu^{x_n} (1 - \mu)^{1 - x_n}} \right) \text{Beta} (\mu | a_0, b_0) \\<br>&amp; \propto \mu^{m + a_0 - 1} (1 - \mu)^{(M - m) + b_0 - 1} \\<br>&amp; \propto \text{Beta}(\mu | a_M, b_M)<br>\end{align}<br>$$</p>
@@ -64,32 +64,99 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>$$<br>\begin{align}<br>\text{Mult} (m_1, …, m_K | \mu, M) &amp; = \left( \begin{array}{c} M \\ m_1 … m_K \end{array} \right) \prod_{k = 1}^K {\mu_k^{m_k}} = \frac{M!}{m_1! … m_K!} \prod_{k = 1}^K {\mu_k^{m_k}} \\<br>\mathbb{E}[m_k] &amp; = N \mu_k \\<br>\text{var}[m_k] &amp; = N \mu_k (1 - \mu_k) \\<br>\text{cov}[m_j m_k] &amp; = -N \mu_j \mu_k<br>\end{align}<br>$$</p>
 <p>Therefore if we need to find a conjugate prior with the same form, the <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution" target="_blank" rel="external">Dirichlet distribution</a> is a good choice. It is the multivariate generalization of the Beta distribution:</p>
 <p>$$<br>\begin{align}<br>\text{Dir} (\mu | \alpha) &amp; = \frac{\Gamma(\alpha_0)} {\Gamma(\alpha_1) … \Gamma(\alpha_K)} \prod_{k = 1}^K {\mu_k^{\alpha_k - 1}}, \ \text{where} \ \alpha_0 = \sum_{k = 1}^K {\alpha_k} \\<br>\mathbb{E}[\mu_k] &amp; = \frac{\alpha_k} {\alpha_0} \\<br>\text{var}[\mu_k] &amp; = \frac{\alpha_k (\alpha_0 - \alpha_k)} {\alpha_0^2 (\alpha_0 + 1)} \\<br>\text{cov}[\mu_j \mu_k] &amp; = - \frac{\alpha_j \alpha_k} {\alpha_0^2 (\alpha_0 + 1)}<br>\end{align}<br>$$</p>
-<p>Therefore the posterior distribution over the parameters \(\mu\):</p>
+<p>The posterior distribution over the parameters \(\mu\):</p>
 <p>$$<br>p(\mu | \mathcal{D}, \alpha) \propto p(\mathcal{D} | \mu) p(\mathcal{\mu | \alpha}) \propto \prod_{k = 1}^K {\mu_k^{\alpha_k + m_k - 1}}<br>$$</p>
-<p>Therefore, \(\alpha_k\) could be interpreted as an effective number of observations of \(x_k = 1\).</p>
-<h3 id="Gaussian_Distribution">Gaussian Distribution</h3><h3 id="Gamma_Distribution">Gamma Distribution</h3><h3 id="Student’s_t_Distribution">Student’s t Distribution</h3><h3 id="More:_Exponential_Family">More: Exponential Family</h3><h2 id="Summary">Summary</h2><p>Prior distributions and their conjugate prior.</p>
+<p>To form the “chain” of prediction, \(\alpha_k\) should be interpreted as an effective number of observations of \(x_k = 1\).</p>
+<h3 id="Gaussian,_Gamma_and_Gaussian-Gamma_Distribution">Gaussian, Gamma and Gaussian-Gamma Distribution</h3><p>We have reviewed the discrete variable situation. That is, every variable has only \(K\) potential values. Now let’s consider the continuous variable situation.  We should have been familiar with the <a href="https://en.wikipedia.org/wiki/Normal_distribution" target="_blank" rel="external">Gaussian distribution</a>, so only its formula will be provided here.</p>
+<p>$$<br>\begin{align}<br>\text{One-dimensional} &amp; : &amp; \mathcal{N} (x | \mu, \sigma^2) &amp; = \frac{1} {\sqrt{(2 \pi)} \sigma} \exp{ \left( - \frac{(x - \mu)^2} {2 \sigma^2} \right) } \\<br>\text{Multi-dimensional} &amp; : &amp; \quad \mathcal{N} (\text{x} | \mu, \Sigma) &amp; = \frac{1} {(2 \pi)^{D / 2} |\Sigma|^{1 / 2}} \exp{\left( - \frac{1} {2} (\text{x} - \mu)^T \Sigma^{-1} (\text{x} - \mu) \right)} \\<br>\end{align}<br>$$</p>
+<p>To be noticed is that Gaussian function has two parameters, they are the mean \(\mu\) and the variance/covariance matrix \(\sigma^2/\Sigma\). So if we want to estimate a Gaussian distribution over some variables, there could be three different situations:</p>
+<ul>
+<li><p>Variance/Covariance is known, but mean is unknown</p>
+</li>
+<li><p>Mean is known, but Variance/covariance is unknown</p>
+</li>
+<li><p>Neither mean nor variance/covariance is known</p>
+</li>
+</ul>
+<p>Now, given a set of one-dimensional continuous variables \(\text{X} = (x_1, …, x_N)^T\), let’s discuss these three situations.</p>
+<h4 id="Variance_is_known,_but_mean_is_unknown">Variance is known, but mean is unknown</h4><p>Assume \(\sigma_{known}^2\) is known, we can easily give a Gaussian likelihood function for the unknown \(\mu\):</p>
+<p>$$<br>p(\text{X} | \mu) = \prod_{n = 1}^{N} {p(x_n | \mu)} = \frac{1} {(2 \pi \sigma^2)^{N / 2}} \exp \left( - \frac{1} {2 \sigma^2} \sum_{n = 1}^{N} {(x_n - \mu)^2} \right )<br>$$</p>
+<p>For this case, the conjugate prior is also Gaussian:</p>
+<p>$$<br>p(\mu | \mu_0, \sigma_0^2) = \mathcal{N} (\mu | \mu_0, \sigma_0^2)<br>$$</p>
+<p>The posterior is:</p>
+<p>$$<br>\begin{align}<br>p(\mu | \text{X}) \propto p(\text{X} | \mu) p(\mu | \mu_0, \sigma_0^2) &amp; \propto \mathcal{N} (\mu | \mu_N, \sigma_N^2) \\<br>\text{where} \ \mu_N &amp; = \frac{\sigma_{known}^2} {N \sigma_0^2 + \sigma_{known}^2} \mu_0 + \frac{N \sigma_0^2} {N \sigma_0^2 + \sigma_{known}^2} \mu_{ML} \\<br>\mu_{ML} &amp; = \frac{1} {N} \sum_{n = 1}^{N} {x_n} \\<br>\frac{1} {\sigma_N^2} &amp; = \frac{1} {\sigma_0^2} + \frac{N} {\sigma^2}<br>\end{align}<br>$$</p>
+<h4 id="Mean_is_known,_but_variance_is_unknown">Mean is known, but variance is unknown</h4><p>Now assume \(\mu_{known}\) is known, the precision \(\lambda = 1 / \sigma^2\) needs to be inferred. The likelihood function is given by:</p>
+<p>$$<br>p(\text{X} | \lambda) = \prod_{n = 1}^{N} {\mathcal{N} (x_n | \mu_{known}, \lambda^{-1})} \propto \lambda^{N / 2} \exp \left( - \frac{\lambda} {2} \sum_{n = 1}^{N} {(x_n - \mu_{known})^2} \right)<br>$$</p>
+<p>\(\mu_{known}\) is known, so the likelihood is in form of \(\lambda^a \exp \left( - b \lambda \right)\), which is also the shape of <a href="https://en.wikipedia.org/wiki/Gamma_distribution" target="_blank" rel="external">Gamma function</a> of \(\lambda\):</p>
+<p>$$<br>\begin{align}<br>\text{Gam} (\lambda | a, b) &amp; = \frac{1} {\Gamma(a)} b^a \lambda^{a - 1} \exp \left( -b \lambda \right) \\<br>\mathbb{E} [\lambda] &amp; = \frac{a} {b} \\<br>\text{var} [\lambda] &amp; = \frac{a} {b^2}<br>\end{align}<br>$$</p>
+<p>And posterior:</p>
+<p>$$<br>p(\lambda | \text{X}) \propto \lambda^{a_0 - 1} \lambda^{N / 2} \exp \left( -b_0 \lambda - \frac{\lambda} {2} \sum_{n = 1}^N {(x_n - \mu_{known})^2} \right)<br>$$</p>
+<p>For forming the chain, this could become the prior of the next iteration: \(\text{Gam} (\lambda | a_N, b_N)\), with \( a_N = a_0 + \frac{N} {2} \) and \( b_N = b_0 + \frac{1} {2} \sum_{n = 1} {N} {(x_n - \mu_{known})^2} \).</p>
+<h4 id="Neither_mean_nor_variance_is_known">Neither mean nor variance is known</h4><p>The much more complex case is that both mean and variance are unknown. The likelihood function is:</p>
+<p>$$<br>\begin{align}<br>p(\text{X} | \mu, \lambda) &amp; = \prod_{n = 1}^N {\left( \frac{\lambda} {2 \pi} \right)^{1 / 2} \exp \left( - \frac{\lambda} {2 \pi} (x_n - \mu)^2 \right)} \\<br>&amp; \propto \left( \lambda^{1 / 2} \exp \left( - \frac{\lambda \mu^2} {2} \right) \right)^N \exp \left( \lambda \mu \sum_{n = 1}^N {x_n} - \frac{\lambda} {2} \sum_{n - 1}^N {x_n^2} \right)<br>\end{align}<br>$$</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Normal-gamma_distribution" target="_blank" rel="external">Gaussian-Gamma distribution</a> can be utilized as conjugate prior here:</p>
+<p>$$<br>\begin{align}<br>p(\mu, \lambda) &amp; = \mathcal{N} (\mu | \mu_0, (\beta \lambda) ^{-1}) \text{Gam}(\lambda | a, b) \\<br>&amp; \propto \exp \left( - \frac{\beta \lambda} {2} {(\mu - \mu_0)^2} \right) \lambda^{a - 1} \exp \left( -b \lambda \right)<br>\end{align}<br>$$</p>
+<h4 id="Multivariate_cases">Multivariate cases</h4><p>What we have just mentioned is only the single variate cases, what shall we do if the data have higher dimensional? The answer is similar to the single variate cases. But the <a href="https://en.wikipedia.org/wiki/Wishart_distribution" target="_blank" rel="external">Wishart distribution</a> will be utilized here to act conjugate prior. The summary is here:</p>
+<ul>
+<li><p>\(\mu\) unknown, \(\Lambda\) known (\(\Lambda = \Sigma^{-1}\), \(\Sigma\) is the covariance matrix): using the Gaussian as conjugate prior, \(p(\mu)\)</p>
+</li>
+<li><p>\(\mu\) known, \(\Lambda\) unknown: using the Wishart as conjugate prior, \(p(\Lambda)\)</p>
+<p>$$<br>\mathcal{W} (\Lambda | \text{W}, \nu) = B |\Lambda|^{(\nu - \mathcal{D} - 1) / 2} \exp \left( - \frac{1} {2} \text{Tr} (\text{W}^{-1} \Lambda) \right)<br>$$</p>
+</li>
+<li><p>\(\mu\) and \(\Lambda\) unknown: using the <a href="https://en.wikipedia.org/wiki/Normal-Wishart_distribution" target="_blank" rel="external">Gaussian-Wishart</a> as conjugate prior, \(p(\mu, \Lambda)\)</p>
+<p>$$<br>p(\mu, \Lambda | \mu_0, \beta, \text{W}, \nu) = \mathcal{N} (\mu | \mu_0, (\beta \Lambda)^{-1}) \mathcal{W} (\Lambda | \text{W}, \nu)<br>$$</p>
+</li>
+</ul>
+<h3 id="Student’s_t-Distribution">Student’s t-Distribution</h3><h2 id="Summary">Summary</h2><p>Prior distributions and their conjugate prior.</p>
 <table>
 <thead>
 <tr>
 <th style="text-align:center">Likelihood Function</th>
+<th style="text-align:center">Formula</th>
 <th style="text-align:center">Conjugate Prior</th>
+<th style="text-align:center">Formula</th>
 <th style="text-align:center">Posterior</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">Bernoulli: \( \mu^{x}(1 - \mu)^{1 - x} \)</td>
-<td style="text-align:center">Beta distribution: \( \frac{\Gamma (a + b)} {\Gamma (a) \Gamma (b)} \mu^{a - 1} (1 - \mu)^{b - 1} \)</td>
+<td style="text-align:center">Bernoulli</td>
+<td style="text-align:center">\( \mu^{x}(1 - \mu)^{1 - x} \)</td>
+<td style="text-align:center">Beta</td>
+<td style="text-align:center">\( \frac{\Gamma (a + b)} {\Gamma (a) \Gamma (b)} \mu^{a - 1} (1 - \mu)^{b - 1} \)</td>
 <td style="text-align:center">\( \frac{a_N}{a_N + b_N} \)</td>
 </tr>
 <tr>
-<td style="text-align:center">Multinomial:\( \left( \begin{array}{c} M \\ m_1 … m_K \end{array} \right) \prod_{k = 1}^K {\mu_k^{m_k}} \)</td>
-<td style="text-align:center">Dirichlet Distribution: \( \frac{\Gamma(\alpha_0)} {\Gamma(\alpha_1) … \Gamma(\alpha_K)} \prod_{k = 1}^K {\mu_k^{\alpha_k - 1}} \)</td>
+<td style="text-align:center">Multinomial</td>
+<td style="text-align:center">\( \left( \begin{array}{c} M \\ m_1 … m_K \end{array} \right) \prod_{k = 1}^K {\mu_k^{m_k}} \)</td>
+<td style="text-align:center">Dirichlet</td>
+<td style="text-align:center">\( \frac{\Gamma(\alpha_0)} {\Gamma(\alpha_1) … \Gamma(\alpha_K)} \prod_{k = 1}^K {\mu_k^{\alpha_k - 1}} \)</td>
 <td style="text-align:center">\( \prod_{k = 1}^K {\mu_k^{\alpha_k + m_k - 1}} \)</td>
+</tr>
+<tr>
+<td style="text-align:center">Gaussian, 1-dim, \(\mu\) unknown</td>
+<td style="text-align:center">\( \prod_{n = 1}^{N} {p(x_n \mid \mu)} \)</td>
+<td style="text-align:center">Gaussian</td>
+<td style="text-align:center">\( \mathcal{N} (\mu \mid \mu_0, \sigma_0^2) \)</td>
+<td style="text-align:center">\( \mathcal{N} (\mu \mid \mu_N, \sigma_N^2) \)</td>
+</tr>
+<tr>
+<td style="text-align:center">Gaussian, 1-dim, \(\sigma\) unknown</td>
+<td style="text-align:center">\( \prod_{n = 1}^{N} {\mathcal{N} (x_n \mid \mu, \lambda^{-1})} \)</td>
+<td style="text-align:center">Gamma</td>
+<td style="text-align:center">\( \text{Gam} (\lambda \mid a_0, b_0) \)</td>
+<td style="text-align:center">\( \text{Gam} (\lambda \mid a_N, b_N) \)</td>
+</tr>
+<tr>
+<td style="text-align:center">Gaussian, 1-dim, both unknown</td>
+<td style="text-align:center">\( \prod_{n = 1}^{N} {\mathcal{N} (x_n \mid \mu, \lambda^{-1})} \)</td>
+<td style="text-align:center">Gaussian-Gamma</td>
+<td style="text-align:center">\( \mathcal{N} (\mu \mid \mu_0, (\beta \lambda) ^{-1}) \text{Gam}(\lambda \mid a_0, b_0) \)</td>
+<td style="text-align:center">…</td>
 </tr>
 </tbody>
 </table>
-<h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate Prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a><br>[4] <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" target="_blank" rel="external">Bernoulli Distribution</a><br>[5] <a href="https://en.wikipedia.org/wiki/Binomial_distribution" target="_blank" rel="external">Binomial Distribution</a><br>[6] <a href="https://en.wikipedia.org/wiki/Beta_distribution" target="_blank" rel="external">Beta Distribution</a><br>[7] <a href="https://en.wikipedia.org/wiki/Multinomial_distribution" target="_blank" rel="external">Multinomial Distribution</a><br>[8] <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution" target="_blank" rel="external">Dirichlet Distribution</a></p>
+<h2 id="Reference">Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/Conjugate_prior" target="_blank" rel="external">Conjugate prior</a><br>[2] Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.<br>[3] <a href="https://commons.wikimedia.org/wiki/File:Beta_distribution_pdf.svg#/media/File:Beta_distribution_pdf.svg" target="_blank" rel="external">“Beta distribution pdf” by Horas based on the work of Krishnavedala</a><br>[4] <a href="https://en.wikipedia.org/wiki/Bernoulli_distribution" target="_blank" rel="external">Bernoulli Distribution</a><br>[5] <a href="https://en.wikipedia.org/wiki/Binomial_distribution" target="_blank" rel="external">Binomial Distribution</a><br>[6] <a href="https://en.wikipedia.org/wiki/Beta_distribution" target="_blank" rel="external">Beta Distribution</a><br>[7] <a href="https://en.wikipedia.org/wiki/Multinomial_distribution" target="_blank" rel="external">Multinomial Distribution</a><br>[8] <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution" target="_blank" rel="external">Dirichlet Distribution</a><br>[9] <a href="https://en.wikipedia.org/wiki/Normal_distribution" target="_blank" rel="external">Gaussian Distribution</a><br>[10] <a href="https://en.wikipedia.org/wiki/Gamma_distribution" target="_blank" rel="external">Gamma Distribution</a><br>[11] <a href="https://en.wikipedia.org/wiki/Normal-gamma_distribution" target="_blank" rel="external">Gaussian-Gamma Distribution</a><br>[12] <a href="https://en.wikipedia.org/wiki/Wishart_distribution" target="_blank" rel="external">Wishart Distribution</a><br>[13] <a href="https://en.wikipedia.org/wiki/Normal-Wishart_distribution" target="_blank" rel="external">Gaussian-Wishart Distribution</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<script type="text/x-mathjax-config">
@@ -110,7 +177,13 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     
       <category term="Gaussian distribution" scheme="http://tongsucn.com/tags/Gaussian-distribution/"/>
     
-      <category term="Student&#39;s t distribution" scheme="http://tongsucn.com/tags/Student-s-t-distribution/"/>
+      <category term="Gaussian-Gamma distribution" scheme="http://tongsucn.com/tags/Gaussian-Gamma-distribution/"/>
+    
+      <category term="Gaussian-Wishart distribution" scheme="http://tongsucn.com/tags/Gaussian-Wishart-distribution/"/>
+    
+      <category term="Student&#39;s t-distribution" scheme="http://tongsucn.com/tags/Student-s-t-distribution/"/>
+    
+      <category term="Wishart distribution" scheme="http://tongsucn.com/tags/Wishart-distribution/"/>
     
       <category term="binary distribution" scheme="http://tongsucn.com/tags/binary-distribution/"/>
     
@@ -196,7 +269,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/"/>
     <id>http://tongsucn.com/2015/11/24/ML-Review-Bayesian-Curve-Fitting/</id>
     <published>2015-11-24T09:44:20.000Z</published>
-    <updated>2015-12-14T17:02:54.000Z</updated>
+    <updated>2015-12-15T09:52:04.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -224,11 +297,13 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p> $$ m_N = \hat{\text{w}} $$</p>
 <p> And the covariance matrix:</p>
 <p> $$ S_N = \left( \beta \phi(\text{X}) \phi(\text{X})^T + {S_{0}}^{-1} \text{I} \right)^{-1} $$</p>
+<p> So the posterior distribution:</p>
+<p> $$ p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N}(\text{w} | m_N, S_N) $$</p>
 </li>
 </ol>
 <h3 id="Predictive_Distribution">Predictive Distribution</h3><p>So far, the training phase is finished. But wait, the weighting vector is now actually a distribution, how can we predict an input point with a distribution? According to Mr. Bishop’s book <em>Pattern Recognition and Machine Learning</em> (PRML), the answer is calculating the integral (continuous) / summation (discrete) over \( \text{w} \)’s distribution!</p>
 <p>$$<br>p(t | x, \text{X}, \text{t}) = \int { p(t | x, \text{w}) p(\text{w} | \text{X}, \text{t}, \beta, \alpha) \text{dw} }<br>$$</p>
-<p>\( p(t | x, \text{w}) = \mathcal{N} (t | y(x, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
+<p>\(p(t | x, \text{w}) = \mathcal{N} (t | y(x, \text{w}), \beta^{-1})\) describes the Gaussian noise distribution and \( p(\text{w} | \text{X}, \text{t}, \beta, \alpha) = \mathcal{N} (\text{w} | m_N, S_N)\) is the MAP solution. Then the posterior distribution is a Gaussian and can be evaluated analytically. According to the PRML, the result is:</p>
 <p>$$<br>p(t | x, \text{X}, \text{t}) = \mathcal{N} (t | m(x), s^2(x))<br>$$</p>
 <p>where mean and variance are</p>
 <p>$$<br>m(x) = \beta \phi(x)^T \text{S} \phi(X) \text{t} \\<br>s(x)^2 = \beta^{-1} + \phi(x) \text{S} \phi(x)<br>$$</p>
@@ -478,7 +553,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
     <link href="http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/"/>
     <id>http://tongsucn.com/2015/11/05/ML-Review-Least-Squares-Regression/</id>
     <published>2015-11-05T21:32:20.000Z</published>
-    <updated>2015-11-24T09:38:14.000Z</updated>
+    <updated>2015-12-15T14:18:55.000Z</updated>
     <content type="html"><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 </script>
@@ -490,7 +565,7 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['\\(', '\\)']]}});
 <p>How to calculate \( \widetilde{\text{w}} \) now? Let’s consider about it from another perspective. If a suitable \( \widetilde{\text{w}} \) is given, we can easily calculate a set of labels \( t^\prime \) for the above training set \( \widetilde{\text{X}} \). But in general the components in \( t - t^\prime \) cannot be zero because the points don’t always (or we can say never) fit perfectly. (See the picture below, click to enlarge)</p>
 <p><img src="http://7xo3hd.com1.z0.glb.clouddn.com/[ML_Review]LSR_1.png" width="256"></p>
 <p>In other words, if there exists a \( \widetilde{\text{w}} \), which makes the difference between \( t^\prime \) and \( t \) minimal, then this linear function with \( \widetilde{\text{w}} \) can “best” describe these points. Such \( \widetilde{\text{w}} \) is what we want. Therefore we can get it via computing the derivative of error function \( E(\widetilde{\text{w}}) = \left|\left| \widetilde{\text{w}}^T \widetilde{\text{X}}- t \right|\right|^2  \):</p>
-<p>$$<br>\begin{align} &amp;&amp; \frac{\partial E(\widetilde{\text{w}})}{\partial \widetilde{\text{w}}} &amp; = 2 \widetilde{\text{X}} (\widetilde{\text{w}}^T \widetilde{\text{X}} - t) \stackrel{!}{=} 0 \\ &amp; \Rightarrow &amp; \widetilde{\text{X}} \widetilde{\text{X}}^T \widetilde{\text{w}} &amp; = \widetilde{\text{X}} t \\ &amp; \Rightarrow &amp; \quad \widetilde{\text{w}} &amp; = (\widetilde{\text{X}} \widetilde{\text{X}}^T)^{-1} \widetilde{\text{X}} t \end{align}<br>$$</p>
+<p>$$<br>\begin{align}<br>&amp;&amp; \frac{\partial E(\widetilde{\text{w}})}{\partial \widetilde{\text{w}}} &amp; = 2 \widetilde{\text{X}} (\widetilde{\text{w}}^T \widetilde{\text{X}} - t) \stackrel{!}{=} 0 \\<br>&amp; \Rightarrow &amp; \widetilde{\text{X}} \widetilde{\text{X}}^T \widetilde{\text{w}} &amp; = \widetilde{\text{X}} t \\<br>&amp; \Rightarrow &amp; \quad \widetilde{\text{w}} &amp; = (\widetilde{\text{X}} \widetilde{\text{X}}^T)^{-1} \widetilde{\text{X}} t<br>\end{align}<br>$$</p>
 <p>The <a href="https://github.com/tongsucn/MachineLearningPractice/blob/master/Regression/least_squares_regression.py" target="_blank" rel="external">Python code</a>. (Python 3 + numpy)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">training_data_point = ...</span><br><span class="line">training_data_label = ...</span><br><span class="line">training_data_num = ...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsr_train</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Training least squares regression (linear).</span><br><span class="line">    Returns:</span><br><span class="line">        The weights w (2 x 1).</span><br><span class="line">    """</span></span><br><span class="line">    <span class="comment"># Extending data points with an additional dimensional of value one</span></span><br><span class="line">    ext_points = ext_data(training_data_point, training_data_num)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating and returning w</span></span><br><span class="line">    res_w = np.dot(ext_points, np.transpose(ext_points))</span><br><span class="line">    res_w = np.dot(np.linalg.inv(res_w), ext_points)</span><br><span class="line">    <span class="keyword">return</span> np.dot(res_w, np.transpose(training_data_label))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ext_data</span><span class="params">(target_data, length, axis=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Extending data points with an additional dimension of value one.</span><br><span class="line">    Args:</span><br><span class="line">        target_data: The 1-D data points to be extended (num x 1).</span><br><span class="line">        length: The number of input data points (scalar).</span><br><span class="line">        axis: The dimension to be extended, 0 by default.</span><br><span class="line">    Returns:</span><br><span class="line">        The extended data points (num x 2).</span><br><span class="line">    """</span></span><br><span class="line">    one = np.ones((length, <span class="number">1</span>)) <span class="keyword">if</span> axis <span class="keyword">else</span> np.ones((<span class="number">1</span>, length))</span><br><span class="line">    <span class="keyword">return</span> np.concatenate((target_data, one), axis)</span><br></pre></td></tr></table></figure>
 <p>Let’s see its result on a given training set:</p>
